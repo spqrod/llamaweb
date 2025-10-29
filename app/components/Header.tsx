@@ -37,16 +37,6 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 bg-black/80 backdrop-blur-sm">
-        <a
-          href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-yellow-400 transition-colors cursor-pointer"
-          aria-label="WhatsApp"
-        >
-          <WhatsAppIcon />
-        </a>
-
         <Link
           href="/"
           onClick={handleLogoClick}
@@ -55,9 +45,45 @@ export default function Header() {
           LLAMA<span className="text-yellow-400">WEB</span>
         </Link>
 
+        <nav className="hidden lg:flex items-center gap-8">
+          <Link
+            href="/services"
+            className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
+          >
+            Servicios
+          </Link>
+          <Link
+            href="/projects"
+            className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
+          >
+            Proyectos
+          </Link>
+          <Link
+            href="/about"
+            className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
+          >
+            Nosotros
+          </Link>
+          <Link
+            href="/contact"
+            className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
+          >
+            Contacto
+          </Link>
+          <a
+            href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-yellow-400 transition-colors cursor-pointer"
+            aria-label="WhatsApp"
+          >
+            <WhatsAppIcon />
+          </a>
+        </nav>
+
         <button
           onClick={() => setMenuOpen(true)}
-          className="flex flex-col gap-1.5 w-8 hover:opacity-70 transition-opacity cursor-pointer"
+          className="lg:hidden flex flex-col gap-1.5 w-8 hover:opacity-70 transition-opacity cursor-pointer"
         >
           <span className="h-0.5 w-full bg-white"></span>
           <span className="h-0.5 w-full bg-white"></span>
@@ -65,7 +91,7 @@ export default function Header() {
         </button>
       </header>
 
-      {/* Menu */}
+      {/* Mobile Menu */}
       <div
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-300 ${
           menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
