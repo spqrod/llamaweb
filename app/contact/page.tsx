@@ -6,6 +6,7 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import WhatsAppIcon from "../components/icons/WhatsAppIcon"
 import LocationIcon from "../components/icons/LocationIcon"
+import { sendContactEmail } from "../actions/send-email"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -14,11 +15,30 @@ export default function ContactPage() {
     phone: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const message = `Hola! Mi nombre es ${formData.name}. Email: ${formData.email}. Teléfono: ${formData.phone}. Mensaje: ${formData.message}`
-    window.open(`https://wa.me/5491158979663?text=${encodeURIComponent(message)}`, "_blank")
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+
+    try {
+      const result = await sendContactEmail(formData)
+
+      if (result.success) {
+        setSubmitStatus("success")
+        setFormData({ name: "", email: "", phone: "", message: "" })
+        setTimeout(() => setSubmitStatus("idle"), 5000)
+      } else {
+        setSubmitStatus("error")
+      }
+    } catch (error) {
+      console.error("[v0] Form submission error:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -174,10 +194,22 @@ export default function ContactPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold"
+                  disabled={isSubmitting}
+                  className="w-full px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  Enviar Mensaje
+                  {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
                 </button>
+
+                {submitStatus === "success" && (
+                  <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center">
+                    ¡Mensaje enviado con éxito! Te contactaremos pronto.
+                  </div>
+                )}
+                {submitStatus === "error" && (
+                  <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-center">
+                    Error al enviar el mensaje. Por favor, intentá de nuevo o contactanos por WhatsApp.
+                  </div>
+                )}
               </form>
             </div>
           </div>
