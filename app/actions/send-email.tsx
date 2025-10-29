@@ -2,16 +2,25 @@
 
 import nodemailer from "nodemailer"
 
-export async function sendContactEmail(formData: {
+interface ContactFormData {
   name: string
   email: string
-  phone: string
+  phone?: string
   message: string
-}) {
+}
+
+export async function sendContactEmail(data: ContactFormData) {
+  console.log("[v0] Email sending initiated")
+
   try {
-    const transporter = nodemailer.createTransport({
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error("[v0] Missing SMTP environment variables")
+      throw new Error("SMTP configuration is incomplete")
+    }
+
+    const transporter = nodemailer.createTransporter({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
+      port: Number.parseInt(process.env.SMTP_PORT || "587"),
       secure: process.env.SMTP_PORT === "465",
       auth: {
         user: process.env.SMTP_USER,
@@ -22,30 +31,26 @@ export async function sendContactEmail(formData: {
     const mailOptions = {
       from: process.env.SMTP_USER,
       to: process.env.SMTP_USER,
-      replyTo: formData.email,
-      subject: `Nuevo mensaje de contacto de ${formData.name}`,
+      subject: `Nuevo mensaje de contacto de ${data.name}`,
       html: `
         <h2>Nuevo mensaje de contacto</h2>
-        <p><strong>Nombre:</strong> ${formData.name}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <p><strong>Teléfono:</strong> ${formData.phone || "No proporcionado"}</p>
+        <p><strong>Nombre:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        ${data.phone ? `<p><strong>Teléfono:</strong> ${data.phone}</p>` : ""}
         <p><strong>Mensaje:</strong></p>
-        <p>${formData.message}</p>
-      `,
-      text: `
-        Nuevo mensaje de contacto
-        
-        Nombre: ${formData.name}
-        Email: ${formData.email}
-        Teléfono: ${formData.phone || "No proporcionado"}
-        Mensaje: ${formData.message}
+        <p>${data.message}</p>
       `,
     }
 
     await transporter.sendMail(mailOptions)
+    console.log("[v0] Email sent successfully")
+
     return { success: true }
   } catch (error) {
-    console.error("[v0] Error sending email:", error)
-    return { success: false, error: "Error al enviar el mensaje" }
+    console.error("[v0] Email sending failed:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    }
   }
 }

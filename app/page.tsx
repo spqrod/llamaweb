@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import Header from "./components/Header"
@@ -14,6 +16,7 @@ import SearchIcon from "./components/icons/SearchIcon"
 import ChatIcon from "./components/icons/ChatIcon"
 import WhatsAppIcon from "./components/icons/WhatsAppIcon"
 import HandshakeIcon from "./components/icons/HandshakeIcon"
+import { sendContactEmail } from "./actions/send-email"
 
 export default function Home() {
   const [headerVisible, setHeaderVisible] = useState(false)
@@ -22,6 +25,15 @@ export default function Home() {
   const [servicesAnimated, setServicesAnimated] = useState(false)
   const servicesRef = useRef<HTMLDivElement>(null)
   const contactRef = useRef<HTMLDivElement>(null)
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
   useEffect(() => {
     if (menuOpen) {
@@ -53,6 +65,10 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [headerVisible, servicesAnimated])
+
+  useEffect(() => {
+    console.log("[v0] Home page loaded")
+  }, [])
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -89,6 +105,32 @@ export default function Home() {
       url: "https://duikertravels.com",
     },
   ]
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log("[v0] Home page contact form submission started")
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+
+    try {
+      const result = await sendContactEmail(formData)
+
+      if (result.success) {
+        console.log("[v0] Home page contact form submitted successfully")
+        setSubmitStatus("success")
+        setFormData({ name: "", email: "", phone: "", message: "" })
+        setTimeout(() => setSubmitStatus("idle"), 5000)
+      } else {
+        console.error("[v0] Home page contact form error:", result.error)
+        setSubmitStatus("error")
+      }
+    } catch (error) {
+      console.error("[v0] Home page contact form exception:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -537,73 +579,81 @@ export default function Home() {
 
               {/* Right Column - Form */}
               <div className="bg-black/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-800">
-                <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">O envianos un mensaje</h3>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    const formData = new FormData(e.currentTarget)
-                    const message = `Hola! Mi nombre es ${formData.get("name")}. Email: ${formData.get("email")}. Teléfono: ${formData.get("phone")}. Mensaje: ${formData.get("message")}`
-                    window.open(`https://wa.me/5491158979663?text=${encodeURIComponent(message)}`, "_blank")
-                  }}
-                  className="space-y-4"
-                >
+                <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">O completá el formulario</h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-bold mb-2">
+                    <label htmlFor="home-name" className="block text-sm font-bold mb-2">
                       Nombre
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
+                      id="home-name"
                       required
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-sm md:text-base"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
                       placeholder="Tu nombre"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-bold mb-2">
+                    <label htmlFor="home-email" className="block text-sm font-bold mb-2">
                       Email
                     </label>
                     <input
                       type="email"
-                      id="email"
-                      name="email"
+                      id="home-email"
                       required
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-sm md:text-base"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
                       placeholder="tu@email.com"
                     />
                   </div>
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-bold mb-2">
+                    <label htmlFor="home-phone" className="block text-sm font-bold mb-2">
                       Teléfono
                     </label>
                     <input
                       type="tel"
-                      id="phone"
-                      name="phone"
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-sm md:text-base"
+                      id="home-phone"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
                       placeholder="+54 11 1234 5678"
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-bold mb-2">
+                    <label htmlFor="home-message" className="block text-sm font-bold mb-2">
                       Mensaje
                     </label>
                     <textarea
-                      id="message"
-                      name="message"
+                      id="home-message"
                       required
                       rows={4}
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-sm md:text-base"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
                       placeholder="Contanos sobre tu proyecto..."
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
-                    Enviar Mensaje
+                    {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
                   </button>
+
+                  {submitStatus === "success" && (
+                    <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center text-sm">
+                      ¡Mensaje enviado con éxito! Te contactaremos pronto.
+                    </div>
+                  )}
+                  {submitStatus === "error" && (
+                    <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-center text-sm">
+                      Error al enviar. Intentá de nuevo o contactanos por WhatsApp.
+                    </div>
+                  )}
                 </form>
               </div>
             </div>

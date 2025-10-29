@@ -20,6 +20,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("[v0] Contact page form submission started")
     setIsSubmitting(true)
     setSubmitStatus("idle")
 
@@ -27,14 +28,16 @@ export default function ContactPage() {
       const result = await sendContactEmail(formData)
 
       if (result.success) {
+        console.log("[v0] Contact page form submitted successfully")
         setSubmitStatus("success")
         setFormData({ name: "", email: "", phone: "", message: "" })
         setTimeout(() => setSubmitStatus("idle"), 5000)
       } else {
+        console.error("[v0] Contact page form error:", result.error)
         setSubmitStatus("error")
       }
     } catch (error) {
-      console.error("[v0] Form submission error:", error)
+      console.error("[v0] Contact page form exception:", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
@@ -69,7 +72,12 @@ export default function ContactPage() {
 
               {/* Contact Methods */}
               <div className="space-y-4">
-                <div className="flex items-center gap-4 p-4 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800">
+                <a
+                  href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
+                >
                   <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
                     <WhatsAppIcon className="text-yellow-400 w-6 h-6" />
                   </div>
@@ -77,7 +85,7 @@ export default function ContactPage() {
                     <p className="text-sm text-gray-400">WhatsApp</p>
                     <p className="font-bold">+54 11 5897 9663</p>
                   </div>
-                </div>
+                </a>
 
                 <div className="flex items-center gap-4 p-4 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800">
                   <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
@@ -88,19 +96,6 @@ export default function ContactPage() {
                     <p className="font-bold">Buenos Aires, Argentina</p>
                   </div>
                 </div>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex gap-4">
-                <a
-                  href="https://wa.me/5491158979663"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold"
-                >
-                  <WhatsAppIcon className="w-5 h-5" />
-                  WhatsApp
-                </a>
               </div>
             </div>
 
