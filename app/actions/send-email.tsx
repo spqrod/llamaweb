@@ -1,6 +1,6 @@
 "use server"
 
-import nodemailer from "nodemailer"
+import type { Transporter } from "nodemailer"
 
 interface ContactFormData {
   name: string
@@ -18,7 +18,9 @@ export async function sendContactEmail(data: ContactFormData) {
       throw new Error("SMTP configuration is incomplete")
     }
 
-    const transporter = nodemailer.createTransporter({
+    const nodemailer = await import("nodemailer")
+
+    const transporter: Transporter = nodemailer.default.createTransport({
       host: process.env.SMTP_HOST,
       port: Number.parseInt(process.env.SMTP_PORT || "587"),
       secure: process.env.SMTP_PORT === "465",
