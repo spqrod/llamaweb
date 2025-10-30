@@ -14,7 +14,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-gray-400 text-sm">Creamos sitios web que impulsan tu negocio</p>
-            <p className="text-gray-500 text-xs mt-2 italic">Buenos Aires, Argentina</p>
+            <p className="text-gray-500 text-xs mt-2 italic">Moldes 850, Buenos Aires, Argentina</p>
           </div>
 
           {/* Navigation */}

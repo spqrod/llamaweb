@@ -7,12 +7,33 @@ interface ContactFormData {
   email: string
   phone?: string
   message: string
+  honeypot?: string
+  timestamp?: number
 }
 
 export async function sendContactEmail(data: ContactFormData) {
   console.log("[v0] Email sending initiated")
 
   try {
+    if (data.honeypot) {
+      console.log("[v0] Bot detected: honeypot field filled")
+      return {
+        success: false,
+        error: "Invalid submission",
+      }
+    }
+
+    if (data.timestamp) {
+      const timeSinceMount = Date.now() - data.timestamp
+      if (timeSinceMount < 3000) {
+        console.log("[v0] Bot detected: form submitted too quickly")
+        return {
+          success: false,
+          error: "Invalid submission",
+        }
+      }
+    }
+
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
       console.error("[v0] Missing SMTP environment variables")
       throw new Error("SMTP configuration is incomplete")

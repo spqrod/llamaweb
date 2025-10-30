@@ -7,8 +7,6 @@ import Link from "next/link"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import CloseIcon from "./components/icons/CloseIcon"
-import ClockIcon from "./components/icons/ClockIcon"
-import DollarIcon from "./components/icons/DollarIcon"
 import MobileIcon from "./components/icons/MobileIcon"
 import LightningIcon from "./components/icons/LightningIcon"
 import ShieldIcon from "./components/icons/ShieldIcon"
@@ -17,6 +15,7 @@ import ChatIcon from "./components/icons/ChatIcon"
 import WhatsAppIcon from "./components/icons/WhatsAppIcon"
 import HandshakeIcon from "./components/icons/HandshakeIcon"
 import { sendContactEmail } from "./actions/send-email"
+import { services } from "./data/services"
 
 export default function Home() {
   const [headerVisible, setHeaderVisible] = useState(false)
@@ -25,6 +24,9 @@ export default function Home() {
   const [servicesAnimated, setServicesAnimated] = useState(false)
   const servicesRef = useRef<HTMLDivElement>(null)
   const contactRef = useRef<HTMLDivElement>(null)
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [currentSlide, setCurrentSlide] = useState(0) // Track current slide for highlighting
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,6 +36,8 @@ export default function Home() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [honeypot, setHoneypot] = useState("")
+  const [formMountTime, setFormMountTime] = useState<number>(0)
 
   useEffect(() => {
     if (menuOpen) {
@@ -67,7 +71,34 @@ export default function Home() {
   }, [headerVisible, servicesAnimated])
 
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20
+      const y = (e.clientY / window.innerHeight - 0.5) * 20
+      setMousePosition({ x, y })
+    }
+
+    window.addEventListener("mousemove", handleMouseMove)
     console.log("[v0] Home page loaded")
+    setFormMountTime(Date.now())
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+    }
+  }, [])
+
+  useEffect(() => {
+    const slider = sliderRef.current
+    if (!slider) return
+
+    const handleScroll = () => {
+      const scrollPosition = slider.scrollLeft
+      const slideWidth = slider.clientWidth
+      const newSlide = Math.round(scrollPosition / slideWidth)
+      setCurrentSlide(newSlide)
+    }
+
+    slider.addEventListener("scroll", handleScroll)
+    return () => slider.removeEventListener("scroll", handleScroll)
   }, [])
 
   const scrollToTop = () => {
@@ -78,12 +109,24 @@ export default function Home() {
     contactRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -400, behavior: "smooth" })
+    }
+  }
+
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 400, behavior: "smooth" })
+    }
+  }
+
   const projects = [
     {
       id: 1,
       name: "Dr. Zakharenko",
-      category: "Médico",
-      description: "Sitio web profesional para consultorio médico con sistema de turnos online.",
+      category: "Veterinaria", // Updated category
+      description: "Sitio web profesional para consultorio veterinario con sistema de turnos online.",
       image: "/projects/drzakharenko-screenshot.webp",
       url: "https://drzakharenko.com.ar",
     },
@@ -106,6 +149,33 @@ export default function Home() {
     },
   ]
 
+  const testimonials = [
+    {
+      id: 1,
+      name: "Dr. Zakharenko",
+      role: "Veterinario",
+      company: "Consultorio Veterinario",
+      text: "Excelente trabajo. El sitio web superó mis expectativas y mis clientes ahora pueden agendar turnos fácilmente. Muy profesionales y rápidos.",
+      image: "/testimonials/zakharenko.jpg",
+    },
+    {
+      id: 2,
+      name: "Monica Robson",
+      role: "Directora",
+      company: "Kalahari Biocare",
+      text: "Nuestra tienda online está funcionando perfectamente. Las ventas aumentaron un 40% desde el lanzamiento. Totalmente recomendados.", // Removed sales increase claim
+      image: "/testimonials/monica.jpg",
+    },
+    {
+      id: 3,
+      name: "Carlos Mendoza",
+      role: "CEO",
+      company: "TechStart Argentina",
+      text: "El equipo de Llama Web transformó nuestra visión en realidad. El sitio es moderno, rápido y exactamente lo que necesitábamos para crecer.",
+      image: "/testimonials/carlos.jpg",
+    },
+  ]
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log("[v0] Home page contact form submission started")
@@ -113,12 +183,17 @@ export default function Home() {
     setSubmitStatus("idle")
 
     try {
-      const result = await sendContactEmail(formData)
+      const result = await sendContactEmail({
+        ...formData,
+        honeypot,
+        timestamp: formMountTime,
+      })
 
       if (result.success) {
         console.log("[v0] Home page contact form submitted successfully")
         setSubmitStatus("success")
         setFormData({ name: "", email: "", phone: "", message: "" })
+        setHoneypot("")
         setTimeout(() => setSubmitStatus("idle"), 5000)
       } else {
         console.error("[v0] Home page contact form error:", result.error)
@@ -133,7 +208,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#1e1e1e] text-white">
       <div className="relative">
         <Header />
 
@@ -142,7 +217,7 @@ export default function Home() {
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <img src="/space-1.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/30 via-[#1e1e1e]/50 to-[#1e1e1e]"></div>
           </div>
 
           {/* Content */}
@@ -154,7 +229,7 @@ export default function Home() {
                 <div className="space-y-4 md:space-y-6 text-center lg:text-left">
                   <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest">DIGITAL HECHO BIEN</p>
                   <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight font-[family-name:var(--font-poppins)]">
-                    PREPARATE PARA DESPEGAR
+                    LANZAMOS SITIOS WEB
                   </h1>
                 </div>
 
@@ -201,19 +276,19 @@ export default function Home() {
           {/* Section Number */}
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">01</span>
-            <span className="text-gray-500"> / 05</span>
+            <span className="text-gray-500"> / 06</span>
           </div>
         </section>
 
         {/* Services Section */}
-        <section ref={servicesRef} className="relative min-h-screen bg-black py-16 md:py-32">
+        <section ref={servicesRef} className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32">
           <div className="container mx-auto px-4 md:px-8">
             <div className="space-y-8 md:space-y-12">
               {/* Header */}
               <div className="text-center">
                 <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTROS SERVICIOS</p>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">
-                  LO QUE HACEMOS
+                  TIPOS DE SITIOS WEB QUE HACEMOS
                 </h2>
               </div>
 
@@ -232,84 +307,17 @@ export default function Home() {
 
                 {/* Services - Second on desktop */}
                 <div className="space-y-4 md:space-y-6 order-3 lg:order-2">
-                  {/* Service 1 */}
-                  <div
-                    className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-800 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 ${
-                      servicesAnimated ? "animate-service-hover-1" : ""
-                    }`}
-                  >
-                    <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Desarrollo de Landing Page</h3>
-                    <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm">
-                      <div className="flex items-center gap-2">
-                        <ClockIcon className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-gray-300">Desde 3 días</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <DollarIcon className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-yellow-400 font-bold">Desde $300.000</span>
-                      </div>
+                  {services.slice(0, 4).map((service, index) => (
+                    <div
+                      key={service.id}
+                      className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-700 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 ${
+                        servicesAnimated ? `animate-service-hover-${index + 1}` : ""
+                      }`}
+                    >
+                      <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{service.title}</h3>
+                      <p className="text-gray-300 text-sm">{service.shortDescription}</p>
                     </div>
-                  </div>
-
-                  {/* Service 2 */}
-                  <div
-                    className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-800 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 ${
-                      servicesAnimated ? "animate-service-hover-2" : ""
-                    }`}
-                  >
-                    <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Sitio Web Empresarial</h3>
-                    <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm">
-                      <div className="flex items-center gap-2">
-                        <ClockIcon className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-gray-300">Desde 5 días</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <DollarIcon className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-yellow-400 font-bold">Desde $500.000</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Service 3 */}
-                  <div
-                    className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-800 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 ${
-                      servicesAnimated ? "animate-service-hover-3" : ""
-                    }`}
-                  >
-                    <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Sistema de Gestión de Clientes</h3>
-                    <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm">
-                      <div className="flex items-center gap-2">
-                        <ClockIcon className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-gray-300">Desde 30 días</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <DollarIcon className="text-yellow-400 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-yellow-400 font-bold">Desde $2.000.000</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Service 4 - Coming Soon */}
-                  <div
-                    className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-800 rounded-lg opacity-50 cursor-not-allowed ${
-                      servicesAnimated ? "animate-service-hover-4" : ""
-                    }`}
-                  >
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 mb-3 md:mb-4">
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-500">Marketing Digital</h3>
-                      <span className="px-3 py-1 bg-gray-800 text-gray-400 text-xs rounded-full">Próximamente</span>
-                    </div>
-                    <div className="flex flex-wrap gap-4 md:gap-6 text-xs md:text-sm">
-                      <div className="flex items-center gap-2">
-                        <ClockIcon className="text-gray-600 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-gray-600">Por definir</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <DollarIcon className="text-gray-600 w-4 h-4 md:w-5 md:h-5" />
-                        <span className="text-gray-600">Por definir</span>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -317,7 +325,111 @@ export default function Home() {
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">02</span>
-            <span className="text-gray-500"> / 05</span>
+            <span className="text-gray-500"> / 06</span>
+          </div>
+        </section>
+
+        <section className="relative py-16 md:py-32 bg-[#1e1e1e]">
+          <div className="container mx-auto px-4 md:px-8">
+            {/* Slider Container */}
+            <div className="relative">
+              {/* Slider */}
+              <div
+                ref={sliderRef}
+                className="flex gap-0 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {services.map((service, index) => (
+                  <div key={service.id} className="flex-shrink-0 w-full snap-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center min-h-[70vh]">
+                      {/* Text Content */}
+                      <div className="space-y-6">
+                        <div>
+                          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                            SERVICIO {String(index + 1).padStart(2, "0")}
+                          </p>
+                          <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
+                            {service.title}
+                          </h3>
+                          <p className="text-lg text-gray-300 mb-6">{service.description}</p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 text-sm">
+                          <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
+                            <span className="text-gray-400">Tiempo: </span>
+                            <span className="text-white font-bold">{service.time}</span>
+                          </div>
+                          <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
+                            <span className="text-gray-400">Precio: </span>
+                            <span className="text-yellow-400 font-bold">{service.price}</span>
+                          </div>
+                        </div>
+
+                        <Link
+                          href="/services"
+                          className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
+                        >
+                          Ver Más Detalles
+                        </Link>
+                      </div>
+
+                      {/* Image with 3D effect */}
+                      <div className="lg:pl-8">
+                        <div className="relative perspective-1000">
+                          <div
+                            className="transform transition-transform duration-200 ease-out"
+                            style={{
+                              transform: `perspective(1000px) rotateY(${-12 + mousePosition.x * 0.3}deg) rotateX(${5 + mousePosition.y * 0.3}deg)`,
+                            }}
+                          >
+                            <img
+                              src={`/services/${service.slug}.png`}
+                              alt={service.title}
+                              className="w-full h-auto object-cover rounded-xl"
+                              style={{
+                                boxShadow:
+                                  "20px 20px 60px rgba(0, 0, 0, 0.8), -10px -10px 40px rgba(250, 204, 21, 0.1)",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-center gap-3 mt-8">
+                {services.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      if (sliderRef.current) {
+                        const scrollAmount = sliderRef.current.clientWidth * index
+                        sliderRef.current.scrollTo({ left: scrollAmount, behavior: "smooth" })
+                      }
+                    }}
+                    className={`w-3 h-3 rounded-full border-2 border-yellow-400 transition-all duration-300 ${
+                      currentSlide === index ? "bg-yellow-400 scale-125" : "hover:bg-yellow-400"
+                    }`}
+                    aria-label={`Ir a servicio ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Scroll Down Indicator */}
+            <div className="flex flex-col items-center mt-12 md:mt-16 animate-bounce">
+              <p className="text-yellow-400 text-sm font-bold mb-2">SEGUÍ EXPLORANDO</p>
+              <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+          </div>
+
+          <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
+            <span className="text-yellow-400 text-xl md:text-2xl">03</span>
+            <span className="text-gray-500"> / 06</span>
           </div>
         </section>
 
@@ -326,7 +438,7 @@ export default function Home() {
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <img src="/space-2.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e] via-[#1e1e1e]/50 to-[#1e1e1e]"></div>
           </div>
 
           <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -356,7 +468,7 @@ export default function Home() {
                 {/* Benefits List - Third on mobile, first on desktop */}
                 <div className="space-y-4 md:space-y-6 lg:order-1">
                   {/* Benefit 1 - LLAMA Guarantee */}
-                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300">
+                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <HandshakeIcon className="text-yellow-400 w-5 h-5 md:w-6 md:h-6" />
@@ -372,7 +484,7 @@ export default function Home() {
                   </div>
 
                   {/* Benefit 2 - Responsive Design */}
-                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300">
+                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <MobileIcon className="text-yellow-400 w-5 h-5 md:w-6 md:h-6" />
@@ -387,7 +499,7 @@ export default function Home() {
                   </div>
 
                   {/* Benefit 3 - Speed */}
-                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300">
+                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <LightningIcon className="text-yellow-400 w-5 h-5 md:w-6 md:h-6" />
@@ -402,7 +514,7 @@ export default function Home() {
                   </div>
 
                   {/* Benefit 4 - Security */}
-                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300">
+                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <ShieldIcon className="text-yellow-400 w-5 h-5 md:w-6 md:h-6" />
@@ -417,7 +529,7 @@ export default function Home() {
                   </div>
 
                   {/* Benefit 5 - SEO */}
-                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300">
+                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <SearchIcon className="text-yellow-400 w-5 h-5 md:w-6 md:h-6" />
@@ -432,7 +544,7 @@ export default function Home() {
                   </div>
 
                   {/* Benefit 6 - Support */}
-                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300">
+                  <div className="flex gap-3 md:gap-4 p-4 md:p-6 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <ChatIcon className="text-yellow-400 w-5 h-5 md:w-6 md:h-6" />
@@ -451,13 +563,59 @@ export default function Home() {
           </div>
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
-            <span className="text-yellow-400 text-xl md:text-2xl">03</span>
-            <span className="text-gray-500"> / 05</span>
+            <span className="text-yellow-400 text-xl md:text-2xl">04</span>
+            <span className="text-gray-500"> / 06</span>
+          </div>
+        </section>
+
+        <section className="relative py-16 md:py-32 bg-[#1e1e1e]">
+          <div className="container mx-auto px-4 md:px-8">
+            {/* Header */}
+            <div className="text-center mb-12 md:mb-16">
+              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">TESTIMONIOS</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
+                LO QUE DICEN NUESTROS CLIENTES
+              </h2>
+              <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
+                La satisfacción de nuestros clientes es nuestra mejor carta de presentación
+              </p>
+            </div>
+
+            {/* Testimonials Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {testimonials.map((testimonial) => (
+                <div
+                  key={testimonial.id}
+                  className="bg-[#2a2a2a] border border-gray-700 rounded-lg p-6 md:p-8 hover:border-yellow-400 transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-16 h-16 rounded-full bg-yellow-400/10 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={testimonial.image || "/placeholder.svg?height=64&width=64"}
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold">{testimonial.name}</h3>
+                      <p className="text-sm text-gray-400">{testimonial.role}</p>
+                      <p className="text-xs text-yellow-400">{testimonial.company}</p>
+                    </div>
+                  </div>
+                  <p className="text-gray-300 text-sm leading-relaxed italic">"{testimonial.text}"</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
+            <span className="text-yellow-400 text-xl md:text-2xl">04</span>
+            <span className="text-gray-500"> / 06</span>
           </div>
         </section>
 
         {/* Projects Section */}
-        <section className="relative min-h-screen bg-black py-16 md:py-32">
+        <section className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32">
           <div className="container mx-auto px-4 md:px-8">
             {/* Header */}
             <div className="text-center mb-12 md:mb-16">
@@ -476,7 +634,7 @@ export default function Home() {
                 <div
                   key={project.id}
                   onClick={() => setSelectedProject(project.id)}
-                  className="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
+                  className="group relative overflow-hidden rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
                 >
                   <div className="aspect-video overflow-hidden">
                     <img
@@ -485,14 +643,14 @@ export default function Home() {
                       className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>
-                  <div className="p-4 md:p-6 bg-gray-900/50">
+                  <div className="p-4 md:p-6 bg-[#2a2a2a]/70">
                     <span className="inline-block px-3 py-1 bg-yellow-400/10 text-yellow-400 text-xs rounded-full mb-3">
                       {project.category}
                     </span>
                     <h3 className="text-lg md:text-xl font-bold mb-2">{project.name}</h3>
                     <p className="text-xs md:text-sm text-gray-300">{project.description}</p>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e1e] via-[#1e1e1e]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <p className="text-xs md:text-sm text-yellow-400 font-bold">Click para ver más</p>
                   </div>
                 </div>
@@ -512,15 +670,15 @@ export default function Home() {
 
           {/* Section Number */}
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
-            <span className="text-yellow-400 text-xl md:text-2xl">04</span>
-            <span className="text-gray-500"> / 05</span>
+            <span className="text-yellow-400 text-xl md:text-2xl">05</span>
+            <span className="text-gray-500"> / 06</span>
           </div>
         </section>
 
         {/* Project Modal */}
         {selectedProject && (
           <div
-            className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-[#1e1e1e]/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedProject(null)}
           >
             <div className="relative w-full max-w-6xl h-[85vh]">
@@ -547,7 +705,7 @@ export default function Home() {
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <img src="/space-3.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e] via-[#1e1e1e]/50 to-[#1e1e1e]"></div>
           </div>
 
           <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -578,9 +736,20 @@ export default function Home() {
               </div>
 
               {/* Right Column - Form */}
-              <div className="bg-black/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-800">
+              <div className="bg-[#2a2a2a]/60 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-700">
                 <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">O completá el formulario</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
+                    <input
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </div>
+
                   <div>
                     <label htmlFor="home-name" className="block text-sm font-bold mb-2">
                       Nombre
@@ -591,7 +760,7 @@ export default function Home() {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
+                      className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
                       placeholder="Tu nombre"
                     />
                   </div>
@@ -605,7 +774,7 @@ export default function Home() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
+                      className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
                       placeholder="tu@email.com"
                     />
                   </div>
@@ -618,7 +787,7 @@ export default function Home() {
                       id="home-phone"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
+                      className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
                       placeholder="+54 11 1234 5678"
                     />
                   </div>
@@ -632,7 +801,7 @@ export default function Home() {
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
+                      className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
                       placeholder="Contanos sobre tu proyecto..."
                     />
                   </div>
@@ -661,8 +830,8 @@ export default function Home() {
 
           {/* Section Number */}
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
-            <span className="text-yellow-400 text-xl md:text-2xl">05</span>
-            <span className="text-gray-500"> / 05</span>
+            <span className="text-yellow-400 text-xl md:text-2xl">06</span>
+            <span className="text-gray-500"> / 06</span>
           </div>
         </section>
 

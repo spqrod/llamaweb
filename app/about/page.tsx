@@ -28,14 +28,14 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#1e1e1e] text-white">
       <Header />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="/space-3.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/50 via-transparent to-[#1e1e1e]/80"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
@@ -50,7 +50,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story Section */}
-      <section className="py-16 md:py-32 bg-black">
+      <section className="py-16 md:py-32 bg-[#1e1e1e]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 md:mb-12">
@@ -80,7 +80,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Section */}
-      <section className="py-16 md:py-32 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-16 md:py-32 bg-gradient-to-b from-[#1e1e1e] to-[#2a2a2a]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="text-center mb-12 md:mb-16">
             <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTRO EQUIPO</p>
@@ -96,7 +96,7 @@ export default function AboutPage() {
             {team.map((member, index) => (
               <div
                 key={index}
-                className="p-6 md:p-8 bg-gray-900/50 border border-gray-800 rounded-lg hover:border-yellow-400 transition-all duration-300 text-center"
+                className="p-6 md:p-8 bg-[#2a2a2a]/70 border border-gray-700 rounded-lg hover:border-yellow-400 transition-all duration-300 text-center"
               >
                 <div className="w-40 h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 mx-auto mb-6 rounded-full overflow-hidden border-4 border-yellow-400">
                   <img
@@ -115,7 +115,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-32 bg-black">
+      <section className="py-16 md:py-32 bg-[#1e1e1e]">
         <div className="container mx-auto px-4 md:px-8 text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
             ¿LISTO PARA TRABAJAR JUNTOS?

@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import WhatsAppIcon from "../components/icons/WhatsAppIcon"
@@ -17,6 +17,12 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [honeypot, setHoneypot] = useState("")
+  const [formMountTime, setFormMountTime] = useState<number>(0)
+
+  useEffect(() => {
+    setFormMountTime(Date.now())
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,12 +31,17 @@ export default function ContactPage() {
     setSubmitStatus("idle")
 
     try {
-      const result = await sendContactEmail(formData)
+      const result = await sendContactEmail({
+        ...formData,
+        honeypot,
+        timestamp: formMountTime,
+      })
 
       if (result.success) {
         console.log("[v0] Contact page form submitted successfully")
         setSubmitStatus("success")
         setFormData({ name: "", email: "", phone: "", message: "" })
+        setHoneypot("")
         setTimeout(() => setSubmitStatus("idle"), 5000)
       } else {
         console.error("[v0] Contact page form error:", result.error)
@@ -45,14 +56,14 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#1e1e1e] text-white">
       <Header />
 
       {/* Contact Info Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="/space-1.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/50 via-transparent to-[#1e1e1e]/80"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -76,7 +87,7 @@ export default function ContactPage() {
                   href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
+                  className="flex items-center gap-4 p-4 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
                 >
                   <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
                     <WhatsAppIcon className="text-yellow-400 w-6 h-6" />
@@ -87,13 +98,13 @@ export default function ContactPage() {
                   </div>
                 </a>
 
-                <div className="flex items-center gap-4 p-4 bg-black/40 backdrop-blur-sm rounded-lg border border-gray-800">
+                <div className="flex items-center gap-4 p-4 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700">
                   <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
                     <LocationIcon className="text-yellow-400 w-6 h-6" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-400">Ubicación</p>
-                    <p className="font-bold">Buenos Aires, Argentina</p>
+                    <p className="font-bold">Moldes 850, Buenos Aires, Argentina</p>
                   </div>
                 </div>
               </div>
@@ -115,7 +126,7 @@ export default function ContactPage() {
       <section className="relative py-16 md:py-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="/space-2.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/80 via-transparent to-[#1e1e1e]/80"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -130,8 +141,19 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="bg-black/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-800">
+            <div className="bg-[#2a2a2a]/60 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-700">
               <form onSubmit={handleSubmit} className="space-y-6">
+                <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 <div>
                   <label htmlFor="name" className="block text-sm font-bold mb-2">
                     Nombre
@@ -142,7 +164,7 @@ export default function ContactPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
                     placeholder="Tu nombre"
                   />
                 </div>
@@ -156,7 +178,7 @@ export default function ContactPage() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
                     placeholder="tu@email.com"
                   />
                 </div>
@@ -169,7 +191,7 @@ export default function ContactPage() {
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
                     placeholder="+54 11 1234 5678"
                   />
                 </div>
@@ -183,7 +205,7 @@ export default function ContactPage() {
                     rows={6}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 bg-black/50 border border-gray-700 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none"
                     placeholder="Contanos sobre tu proyecto..."
                   />
                 </div>
