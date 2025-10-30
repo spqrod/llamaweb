@@ -163,7 +163,7 @@ export default function Home() {
       name: "Monica Robson",
       role: "Directora",
       company: "Kalahari Biocare",
-      text: "Nuestra tienda online está funcionando perfectamente. Las ventas aumentaron un 40% desde el lanzamiento. Totalmente recomendados.", // Removed sales increase claim
+      text: "Nuestra tienda online está funcionando perfectamente. Totalmente recomendados.", // Removed sales increase claim
       image: "/testimonials/monica.jpg",
     },
     {
@@ -333,6 +333,26 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-8">
             {/* Slider Container */}
             <div className="relative">
+              <button
+                onClick={scrollLeft}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/20 hover:bg-yellow-400 text-yellow-400 hover:text-black rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm border border-yellow-400"
+                aria-label="Servicio anterior"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              <button
+                onClick={scrollRight}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/20 hover:bg-yellow-400 text-yellow-400 hover:text-black rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm border border-yellow-400"
+                aria-label="Siguiente servicio"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
               {/* Slider */}
               <div
                 ref={sliderRef}
@@ -341,7 +361,7 @@ export default function Home() {
               >
                 {services.map((service, index) => (
                   <div key={service.id} className="flex-shrink-0 w-full snap-center">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center min-h-[70vh]">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center min-h-[70vh] px-4 md:px-8">
                       {/* Text Content */}
                       <div className="space-y-6">
                         <div>
@@ -374,8 +394,8 @@ export default function Home() {
                       </div>
 
                       {/* Image with 3D effect */}
-                      <div className="lg:pl-8">
-                        <div className="relative perspective-1000">
+                      <div className="lg:pl-8 flex justify-center">
+                        <div className="relative perspective-1000 w-full max-w-xl">
                           <div
                             className="transform transition-transform duration-200 ease-out"
                             style={{
@@ -385,7 +405,7 @@ export default function Home() {
                             <img
                               src={`/services/${service.slug}.png`}
                               alt={service.title}
-                              className="w-full h-auto object-cover rounded-xl"
+                              className="w-full h-auto object-contain rounded-xl"
                               style={{
                                 boxShadow:
                                   "20px 20px 60px rgba(0, 0, 0, 0.8), -10px -10px 40px rgba(250, 204, 21, 0.1)",
