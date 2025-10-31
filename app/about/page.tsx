@@ -35,7 +35,7 @@ export default function AboutPage() {
       <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="/space-3.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/50 via-transparent to-[#1e1e1e]/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/30 via-[#1e1e1e]/50 to-[#1e1e1e]"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">

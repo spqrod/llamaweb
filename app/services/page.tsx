@@ -202,11 +202,7 @@ export default function ServicesPage() {
                     <h3 className="text-xl font-bold group-hover:text-yellow-400 transition-colors">{service.title}</h3>
                     <span className="text-xs text-gray-500">0{index + 1}</span>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-400">
-                    <span>{service.time}</span>
-                    <span>•</span>
-                    <span className="text-yellow-400 font-bold">{service.price}</span>
-                  </div>
+                  <p className="text-sm text-gray-400">{service.shortDescription}</p>
                 </button>
               ))}
             </div>

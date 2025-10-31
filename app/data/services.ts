@@ -2,7 +2,7 @@ export interface Service {
   id: string
   title: string
   description: string
-  shortDescription: string // Added short description for home page
+  shortDescription: string
   features: string[]
   time: string
   price: string
@@ -17,8 +17,14 @@ export const services: Service[] = [
     slug: "landing-page",
     description:
       "Páginas de aterrizaje diseñadas para convertir visitantes en clientes. Optimizadas para velocidad, SEO y conversión.",
-    shortDescription: "Página única optimizada para convertir visitantes en clientes", // Added
-    features: ["Formularios de contacto", "Botón de WhatsApp", "Integración con Google Analytics"],
+    shortDescription: "Página única optimizada para convertir visitantes en clientes",
+    features: [
+      "Diseño personalizado a tu marca",
+      "Dominio web, Hosting Premium y 1 Correo Corporativo",
+      "Formularios de contacto",
+      "Botón de WhatsApp",
+      "Integración con Google Analytics",
+    ],
     time: "Desde 3 días",
     price: "Desde $200.000",
   },
@@ -28,12 +34,13 @@ export const services: Service[] = [
     slug: "sitio-web-institucional",
     description:
       "Sitios web completos para empresas que buscan establecer su presencia digital profesional y atraer nuevos clientes.",
-    shortDescription: "Sitio web completo para establecer tu presencia digital profesional", // Added
+    shortDescription: "Sitio web completo para establecer tu presencia digital profesional",
     features: [
+      "Diseño personalizado a tu marca",
+      "Dominio web, Hosting Premium y 1 Correo Corporativo",
       "Múltiples páginas",
       "Formularios de contacto",
       "Botón de WhatsApp",
-      "Integración con redes sociales",
       "Integración con Google Analytics",
     ],
     time: "Desde 5 días",
@@ -45,8 +52,10 @@ export const services: Service[] = [
     slug: "tienda-online",
     description:
       "Tiendas online completas con carrito de compras, pasarela de pagos y gestión de productos para vender en línea.",
-    shortDescription: "Tienda online completa con carrito de compras y pasarela de pagos", // Added
+    shortDescription: "Tienda online completa con carrito de compras y pasarela de pagos",
     features: [
+      "Diseño personalizado a tu marca",
+      "Dominio web, Hosting Premium y 1 Correo Corporativo",
       "Carrito de compras",
       "Pasarela de pagos",
       "Gestión de productos",
@@ -62,8 +71,10 @@ export const services: Service[] = [
     slug: "crm",
     description:
       "Plataformas personalizadas para gestionar clientes, proyectos y operaciones de tu negocio de manera eficiente.",
-    shortDescription: "Plataforma personalizada para gestionar clientes y operaciones", // Added
+    shortDescription: "Plataforma personalizada para gestionar clientes y operaciones",
     features: [
+      "Diseño personalizado a tu marca",
+      "Dominio web, Hosting Premium y 1 Correo Corporativo",
       "Panel de administración",
       "Base de datos personalizada",
       "Reportes y analytics",

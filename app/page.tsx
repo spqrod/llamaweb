@@ -111,13 +111,15 @@ export default function Home() {
 
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -400, behavior: "smooth" })
+      const slideWidth = sliderRef.current.clientWidth
+      sliderRef.current.scrollBy({ left: -slideWidth, behavior: "smooth" })
     }
   }
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 400, behavior: "smooth" })
+      const slideWidth = sliderRef.current.clientWidth
+      sliderRef.current.scrollBy({ left: slideWidth, behavior: "smooth" })
     }
   }
 
@@ -146,6 +148,14 @@ export default function Home() {
       image:
         "https://xurtccytrzafbfk3.public.blob.vercel-storage.com/agent-assets/ef9e8de27250caf1486db88802a7495f07778bce3fc7bde78f6a8d6d541259d0.jpeg",
       url: "https://duikertravels.com",
+    },
+    {
+      id: 6,
+      name: "Abogado Demo",
+      category: "Legal",
+      description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
+      image: "/lawyer-website.jpg",
+      url: "https://abogado-demo-2.vercel.app",
     },
   ]
 
@@ -329,29 +339,45 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="relative py-8 bg-[#1e1e1e]">
+          <div className="container mx-auto px-4 md:px-8">
+            <div className="flex flex-col items-center animate-bounce">
+              <p className="text-yellow-400 text-sm font-bold mb-2">SEGUÍ EXPLORANDO</p>
+              <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        {/* Slider Section */}
         <section className="relative py-16 md:py-32 bg-[#1e1e1e]">
           <div className="container mx-auto px-4 md:px-8">
             {/* Slider Container */}
             <div className="relative">
-              <button
-                onClick={scrollLeft}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/20 hover:bg-yellow-400 text-yellow-400 hover:text-black rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm border border-yellow-400"
-                aria-label="Servicio anterior"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
+              {currentSlide > 0 && (
+                <button
+                  onClick={scrollLeft}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/90 hover:bg-yellow-400 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
+                  aria-label="Servicio anterior"
+                >
+                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
 
-              <button
-                onClick={scrollRight}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/20 hover:bg-yellow-400 text-yellow-400 hover:text-black rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-sm border border-yellow-400"
-                aria-label="Siguiente servicio"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+              {currentSlide < services.length - 1 && (
+                <button
+                  onClick={scrollRight}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/90 hover:bg-yellow-400 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
+                  aria-label="Siguiente servicio"
+                >
+                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
 
               {/* Slider */}
               <div
@@ -393,9 +419,8 @@ export default function Home() {
                         </Link>
                       </div>
 
-                      {/* Image with 3D effect */}
                       <div className="lg:pl-8 flex justify-center">
-                        <div className="relative perspective-1000 w-full max-w-xl">
+                        <div className="relative perspective-1000 w-full max-w-lg">
                           <div
                             className="transform transition-transform duration-200 ease-out"
                             style={{
@@ -436,14 +461,6 @@ export default function Home() {
                   />
                 ))}
               </div>
-            </div>
-
-            {/* Scroll Down Indicator */}
-            <div className="flex flex-col items-center mt-12 md:mt-16 animate-bounce">
-              <p className="text-yellow-400 text-sm font-bold mb-2">SEGUÍ EXPLORANDO</p>
-              <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
             </div>
           </div>
 

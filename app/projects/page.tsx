@@ -52,17 +52,25 @@ export default function ProjectsPage() {
       url: "https://importba.vercel.app",
       description: "Broker de importaciones en Buenos Aires con gestión integral de procesos.",
     },
+    {
+      id: 6,
+      name: "Abogado Demo",
+      category: "Legal",
+      image: "/lawyer-website.jpg",
+      url: "https://abogado-demo-2.vercel.app",
+      description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
+    },
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#1e1e1e] text-white">
       <Header />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="/space-2.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1e1e1e]/30 via-[#1e1e1e]/50 to-[#1e1e1e]"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
@@ -77,7 +85,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-16 md:py-32 bg-black">
+      <section className="py-16 md:py-32 bg-[#1e1e1e]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project) => (
