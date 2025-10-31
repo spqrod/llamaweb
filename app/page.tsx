@@ -419,7 +419,7 @@ export default function Home() {
                         </div>
 
                         <Link
-                          href="/services"
+                          href="/servicios"
                           className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
                         >
                           Ver Más Detalles
@@ -704,7 +704,7 @@ export default function Home() {
             {/* Button */}
             <div className="text-center">
               <Link
-                href="/projects"
+                href="/proyectos"
                 className="inline-block px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
               >
                 Ver Todos los Proyectos

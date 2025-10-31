@@ -273,7 +273,7 @@ export default function ServicesPage() {
                   </div>
 
                   <Link
-                    href="/contact"
+                    href="/contacto"
                     className="inline-block px-8 py-4 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
                   >
                     Consultar

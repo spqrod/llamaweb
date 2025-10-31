@@ -24,16 +24,16 @@ export default function Footer() {
               <Link href="/" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Inicio
               </Link>
-              <Link href="/services" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link href="/servicios" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Servicios
               </Link>
-              <Link href="/projects" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link href="/proyectos" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Proyectos
               </Link>
-              <Link href="/about" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link href="/nosotros" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Nosotros
               </Link>
-              <Link href="/contact" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link href="/contacto" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Contacto
               </Link>
             </div>
@@ -43,7 +43,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4 text-yellow-400">Contacto</h3>
             <div className="space-y-3">
-              <Link href="/contact" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link href="/contacto" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Enviar Email
               </Link>
               <a
@@ -62,10 +62,13 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4 text-yellow-400">Legal</h3>
             <div className="space-y-2">
-              <Link href="/privacy" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link
+                href="/privacidad"
+                className="block text-gray-300 hover:text-white transition-colors cursor-pointer"
+              >
                 Política de Privacidad
               </Link>
-              <Link href="/terms" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
+              <Link href="/terminos" className="block text-gray-300 hover:text-white transition-colors cursor-pointer">
                 Términos de Servicio
               </Link>
             </div>

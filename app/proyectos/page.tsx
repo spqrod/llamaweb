@@ -152,7 +152,7 @@ export default function ProjectsPage() {
             Contactanos hoy y creemos juntos algo increíble
           </p>
           <Link
-            href="/contact"
+            href="/contacto"
             className="inline-block px-8 py-4 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold cursor-pointer"
           >
             Empezar Ahora

@@ -47,25 +47,25 @@ export default function Header() {
 
         <nav className="hidden lg:flex items-center gap-8">
           <Link
-            href="/services"
+            href="/servicios"
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
             Servicios
           </Link>
           <Link
-            href="/projects"
+            href="/proyectos"
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
             Proyectos
           </Link>
           <Link
-            href="/about"
+            href="/nosotros"
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
             Nosotros
           </Link>
           <Link
-            href="/contact"
+            href="/contacto"
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
             Contacto
@@ -126,28 +126,28 @@ export default function Header() {
 
             <nav className="space-y-6">
               <Link
-                href="/services"
+                href="/servicios"
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
                 Servicios
               </Link>
               <Link
-                href="/projects"
+                href="/proyectos"
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
                 Proyectos
               </Link>
               <Link
-                href="/about"
+                href="/nosotros"
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
                 Nosotros
               </Link>
               <Link
-                href="/contact"
+                href="/contacto"
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
@@ -169,14 +169,14 @@ export default function Header() {
 
             <div className="mt-8">
               <Link
-                href="/privacy"
+                href="/privacidad"
                 onClick={() => setMenuOpen(false)}
                 className="block text-sm text-gray-400 hover:text-white transition-colors mb-2 cursor-pointer"
               >
                 Política de Privacidad
               </Link>
               <Link
-                href="/terms"
+                href="/terminos"
                 onClick={() => setMenuOpen(false)}
                 className="block text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
               >
