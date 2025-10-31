@@ -394,39 +394,19 @@ export default function Home() {
               >
                 {services.map((service, index) => (
                   <div key={service.id} className="flex-shrink-0 w-full snap-center">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center min-h-[70vh] px-4 md:px-8">
-                      {/* Text Content */}
-                      <div className="space-y-6">
-                        <div>
-                          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
-                            SERVICIO {String(index + 1).padStart(2, "0")}
-                          </p>
-                          <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
-                            {service.title}
-                          </h3>
-                          <p className="text-lg text-gray-300 mb-6">{service.description}</p>
-                        </div>
-
-                        <div className="flex flex-wrap gap-4 text-sm">
-                          <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
-                            <span className="text-gray-400">Tiempo: </span>
-                            <span className="text-white font-bold">{service.time}</span>
-                          </div>
-                          <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
-                            <span className="text-gray-400">Precio: </span>
-                            <span className="text-yellow-400 font-bold">{service.price}</span>
-                          </div>
-                        </div>
-
-                        <Link
-                          href="/servicios"
-                          className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
-                        >
-                          Ver Más Detalles
-                        </Link>
+                    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-12 items-center min-h-[70vh] px-4 md:px-8">
+                      {/* Service Name - Always first on mobile */}
+                      <div className="w-full lg:hidden">
+                        <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                          SERVICIO {String(index + 1).padStart(2, "0")}
+                        </p>
+                        <h3 className="text-3xl md:text-4xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
+                          {service.title}
+                        </h3>
                       </div>
 
-                      <div className="lg:pl-8 flex justify-center">
+                      {/* Image - Second on mobile, second on desktop */}
+                      <div className="w-full lg:pl-8 flex justify-center lg:order-2">
                         <div className="relative perspective-1000 w-full max-w-lg">
                           <div
                             className="transform transition-transform duration-200 ease-out"
@@ -446,11 +426,48 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
+
+                      {/* Text Content - Third on mobile (description, time/price, button), first on desktop */}
+                      <div className="w-full space-y-6 lg:order-1">
+                        {/* Service Name - Hidden on mobile, shown on desktop */}
+                        <div className="hidden lg:block">
+                          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                            SERVICIO {String(index + 1).padStart(2, "0")}
+                          </p>
+                          <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
+                            {service.title}
+                          </h3>
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-lg text-gray-300 mb-6">{service.description}</p>
+
+                        {/* Time and Price */}
+                        <div className="flex flex-wrap gap-4 text-sm">
+                          <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
+                            <span className="text-gray-400">Tiempo: </span>
+                            <span className="text-white font-bold">{service.time}</span>
+                          </div>
+                          <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
+                            <span className="text-gray-400">Precio: </span>
+                            <span className="text-yellow-400 font-bold">{service.price}</span>
+                          </div>
+                        </div>
+
+                        {/* Button */}
+                        <Link
+                          href="/servicios"
+                          className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
+                        >
+                          Ver Más Detalles
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
+              {/* Slider Navigation Dots */}
               <div className="flex justify-center gap-3 mt-8">
                 {services.map((_, index) => (
                   <button
