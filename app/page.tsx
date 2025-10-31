@@ -17,6 +17,12 @@ import HandshakeIcon from "./components/icons/HandshakeIcon"
 import { sendContactEmail } from "./actions/send-email"
 import { services } from "./data/services"
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void
+  }
+}
+
 export default function Home() {
   const [headerVisible, setHeaderVisible] = useState(false)
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
@@ -127,7 +133,7 @@ export default function Home() {
     {
       id: 1,
       name: "Dr. Zakharenko",
-      category: "Veterinaria", // Updated category
+      category: "Veterinaria",
       description: "Sitio web profesional para consultorio veterinario con sistema de turnos online.",
       image: "/projects/drzakharenko-screenshot.webp",
       url: "https://drzakharenko.com.ar",
@@ -148,14 +154,6 @@ export default function Home() {
       image:
         "https://xurtccytrzafbfk3.public.blob.vercel-storage.com/agent-assets/ef9e8de27250caf1486db88802a7495f07778bce3fc7bde78f6a8d6d541259d0.jpeg",
       url: "https://duikertravels.com",
-    },
-    {
-      id: 6,
-      name: "Abogado Demo",
-      category: "Legal",
-      description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
-      image: "/lawyer-website.jpg",
-      url: "https://abogado-demo-2.vercel.app",
     },
   ]
 
@@ -202,6 +200,15 @@ export default function Home() {
       if (result.success) {
         console.log("[v0] Home page contact form submitted successfully")
         setSubmitStatus("success")
+
+        if (typeof window !== "undefined" && window.gtag) {
+          window.gtag("event", "conversion", {
+            send_to: "AW-17685819489/BsZ4CIfmtrcbEOHgoPFB",
+            value: 1.0,
+            currency: "ARS",
+          })
+        }
+
         setFormData({ name: "", email: "", phone: "", message: "" })
         setHoneypot("")
         setTimeout(() => setSubmitStatus("idle"), 5000)
@@ -210,7 +217,7 @@ export default function Home() {
         setSubmitStatus("error")
       }
     } catch (error) {
-      console.error("[v0] Home page contact form exception:", error)
+      console.error("[v0] Home page form exception:", error)
       setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
@@ -824,7 +831,7 @@ export default function Home() {
                       id="home-phone"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
+                      className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
                       placeholder="+54 11 1234 5678"
                     />
                   </div>
@@ -865,7 +872,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Section Number */}
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">06</span>
             <span className="text-gray-500"> / 06</span>

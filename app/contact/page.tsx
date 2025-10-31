@@ -8,6 +8,12 @@ import WhatsAppIcon from "../components/icons/WhatsAppIcon"
 import LocationIcon from "../components/icons/LocationIcon"
 import { sendContactEmail } from "../actions/send-email"
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void
+  }
+}
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -40,6 +46,15 @@ export default function ContactPage() {
       if (result.success) {
         console.log("[v0] Contact page form submitted successfully")
         setSubmitStatus("success")
+
+        if (typeof window !== "undefined" && window.gtag) {
+          window.gtag("event", "conversion", {
+            send_to: "AW-17685819489/BsZ4CIfmtrcbEOHgoPFB",
+            value: 1.0,
+            currency: "ARS",
+          })
+        }
+
         setFormData({ name: "", email: "", phone: "", message: "" })
         setHoneypot("")
         setTimeout(() => setSubmitStatus("idle"), 5000)

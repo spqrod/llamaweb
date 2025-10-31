@@ -56,7 +56,7 @@ export default function ProjectsPage() {
       id: 6,
       name: "Abogado Demo",
       category: "Legal",
-      image: "/lawyer-website.jpg",
+      image: "/projects/abogado-screenshot.jpg",
       url: "https://abogado-demo-2.vercel.app",
       description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
     },
