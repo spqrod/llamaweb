@@ -362,30 +362,6 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-8">
             {/* Slider Container */}
             <div className="relative">
-              {currentSlide > 0 && (
-                <button
-                  onClick={scrollLeft}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/90 hover:bg-yellow-400 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
-                  aria-label="Servicio anterior"
-                >
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-              )}
-
-              {currentSlide < services.length - 1 && (
-                <button
-                  onClick={scrollRight}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/90 hover:bg-yellow-400 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
-                  aria-label="Siguiente servicio"
-                >
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              )}
-
               {/* Slider */}
               <div
                 ref={sliderRef}
@@ -405,8 +381,44 @@ export default function Home() {
                         </h3>
                       </div>
 
-                      {/* Image - Second on mobile, second on desktop */}
-                      <div className="w-full lg:pl-8 flex justify-center lg:order-2">
+                      <div className="w-full lg:pl-8 flex justify-center lg:order-2 relative">
+                        {/* Mobile arrows - positioned on image, more transparent */}
+                        {currentSlide > 0 && (
+                          <button
+                            onClick={scrollLeft}
+                            className="lg:hidden absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50"
+                            aria-label="Servicio anterior"
+                          >
+                            <svg
+                              className="w-6 h-6"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              strokeWidth={3}
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                          </button>
+                        )}
+
+                        {currentSlide < services.length - 1 && (
+                          <button
+                            onClick={scrollRight}
+                            className="lg:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50"
+                            aria-label="Siguiente servicio"
+                          >
+                            <svg
+                              className="w-6 h-6"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              strokeWidth={3}
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                          </button>
+                        )}
+
                         <div className="relative perspective-1000 w-full max-w-lg">
                           <div
                             className="transform transition-transform duration-200 ease-out"
@@ -466,6 +478,30 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+
+              {currentSlide > 0 && (
+                <button
+                  onClick={scrollLeft}
+                  className="hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
+                  aria-label="Servicio anterior"
+                >
+                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+              )}
+
+              {currentSlide < services.length - 1 && (
+                <button
+                  onClick={scrollRight}
+                  className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
+                  aria-label="Siguiente servicio"
+                >
+                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              )}
 
               {/* Slider Navigation Dots */}
               <div className="flex justify-center gap-3 mt-8">
