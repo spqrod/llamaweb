@@ -6,7 +6,6 @@ import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
-import CloseIcon from "./components/icons/CloseIcon"
 import MobileIcon from "./components/icons/MobileIcon"
 import LightningIcon from "./components/icons/LightningIcon"
 import ShieldIcon from "./components/icons/ShieldIcon"
@@ -134,8 +133,8 @@ export default function Home() {
     {
       id: 1,
       name: "Dr. Zakharenko",
-      category: "Veterinaria",
-      description: "Sitio web profesional para consultorio veterinario con sistema de turnos online.",
+      category: "Veterinario",
+      description: "Sitio web profesional para consultorio veterinario.",
       image: "/projects/drzakharenko-1.webp",
       screenshots: ["/projects/drzakharenko-1.webp", "/projects/drzakharenko-2.webp", "/projects/drzakharenko-3.webp"],
       url: "https://drzakharenko.com.ar",
@@ -143,8 +142,8 @@ export default function Home() {
     {
       id: 2,
       name: "Kalahari Biocare",
-      category: "E-commerce",
-      description: "Tienda online de productos naturales y cosméticos con carrito de compras integrado.",
+      category: "Productor",
+      description: "Sitio web para productor de aceites naturales y mayorista para empresas cosméticas.",
       image: "/projects/kalahari-1.webp",
       screenshots: ["/projects/kalahari-1.webp", "/projects/kalahari-2.webp", "/projects/kalahari-3.webp"],
       url: "https://kalaharibiocare.com",
@@ -775,23 +774,11 @@ export default function Home() {
 
         {/* Project Modal */}
         {selectedProject && (
-          <div
-            className="fixed inset-0 bg-[#1e1e1e]/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedProject(null)}
-          >
-            <div className="relative w-full max-w-6xl h-[85vh]">
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute -top-6 -right-6 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-lg cursor-pointer"
-                aria-label="Cerrar"
-              >
-                <CloseIcon />
-              </button>
-              <ProjectDialog
-                project={projects.find((p) => p.id === selectedProject) || null}
-                onClose={() => setSelectedProject(null)}
-              />
-            </div>
+          <div className="fixed inset-0 bg-[#1e1e1e]/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <ProjectDialog
+              project={projects.find((p) => p.id === selectedProject) || null}
+              onClose={() => setSelectedProject(null)}
+            />
           </div>
         )}
 

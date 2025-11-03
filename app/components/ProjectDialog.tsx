@@ -11,6 +11,7 @@ interface Project {
   category: string
   image: string
   screenshots: string[]
+  mobileScreenshots?: string[]
   url: string
   description: string
 }
@@ -22,6 +23,19 @@ interface ProjectDialogProps {
 
 export default function ProjectDialog({ project, onClose }: ProjectDialogProps) {
   const [currentScreenshot, setCurrentScreenshot] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   useEffect(() => {
     if (project) {
@@ -29,18 +43,52 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
     }
   }, [project])
 
+  useEffect(() => {
+    if (project) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  }, [project])
+
   if (!project) return null
 
+  const screenshots = isMobile && project.mobileScreenshots ? project.mobileScreenshots : project.screenshots
+
   const handlePrevScreenshot = () => {
-    setCurrentScreenshot((prev) => (prev === 0 ? project.screenshots.length - 1 : prev - 1))
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentScreenshot((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1))
+      setIsTransitioning(false)
+    }, 150)
   }
 
   const handleNextScreenshot = () => {
-    setCurrentScreenshot((prev) => (prev === project.screenshots.length - 1 ? 0 : prev + 1))
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setCurrentScreenshot((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1))
+      setIsTransitioning(false)
+    }, 150)
+  }
+
+  const handleDotClick = (index: number) => {
+    if (index !== currentScreenshot) {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setCurrentScreenshot(index)
+        setIsTransitioning(false)
+      }, 150)
+    }
   }
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center" onClick={onClose}>
+    <div
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
       <div className="relative" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onClose}
@@ -53,13 +101,15 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
         <div className="relative overflow-hidden">
           <div className="relative">
             <img
-              src={project.screenshots[currentScreenshot] || "/placeholder.svg"}
+              src={screenshots[currentScreenshot] || "/placeholder.svg"}
               alt={`${project.name} - Screenshot ${currentScreenshot + 1}`}
-              className="w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl"
+              className={`w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
             />
 
             {/* Navigation Arrows - Only show if more than 1 screenshot */}
-            {project.screenshots.length > 1 && (
+            {screenshots.length > 1 && (
               <>
                 <button
                   onClick={handlePrevScreenshot}
@@ -80,12 +130,12 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
           </div>
 
           {/* Navigation Dots */}
-          {project.screenshots.length > 1 && (
+          {screenshots.length > 1 && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 py-2 px-4 bg-black/50 rounded-full">
-              {project.screenshots.map((_, index) => (
+              {screenshots.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setCurrentScreenshot(index)}
+                  onClick={() => handleDotClick(index)}
                   className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                     index === currentScreenshot ? "bg-yellow-400 w-8" : "bg-gray-400 hover:bg-gray-300 w-2"
                   }`}
