@@ -27,6 +27,14 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    console.log("[v0] ProjectDialog - currentScreenshot changed:", currentScreenshot)
+  }, [currentScreenshot])
+
+  useEffect(() => {
+    console.log("[v0] ProjectDialog - project changed:", project?.name)
+  }, [project])
+
+  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
@@ -37,8 +45,10 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
+  // Use project instead of project.id to prevent unnecessary resets
   useEffect(() => {
     if (project) {
+      console.log("[v0] ProjectDialog - Resetting to screenshot 0 for project:", project.name)
       setCurrentScreenshot(0)
     }
   }, [project])
@@ -59,22 +69,33 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
   const screenshots = isMobile && project.mobileScreenshots ? project.mobileScreenshots : project.screenshots
 
   const handlePrevScreenshot = () => {
+    console.log("[v0] ProjectDialog - handlePrevScreenshot called, current:", currentScreenshot)
     setIsTransitioning(true)
     setTimeout(() => {
-      setCurrentScreenshot((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1))
+      setCurrentScreenshot((prev) => {
+        const newIndex = prev === 0 ? screenshots.length - 1 : prev - 1
+        console.log("[v0] ProjectDialog - Setting prev screenshot from", prev, "to", newIndex)
+        return newIndex
+      })
       setIsTransitioning(false)
     }, 150)
   }
 
   const handleNextScreenshot = () => {
+    console.log("[v0] ProjectDialog - handleNextScreenshot called, current:", currentScreenshot)
     setIsTransitioning(true)
     setTimeout(() => {
-      setCurrentScreenshot((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1))
+      setCurrentScreenshot((prev) => {
+        const newIndex = prev === screenshots.length - 1 ? 0 : prev + 1
+        console.log("[v0] ProjectDialog - Setting next screenshot from", prev, "to", newIndex)
+        return newIndex
+      })
       setIsTransitioning(false)
     }, 150)
   }
 
   const handleDotClick = (index: number) => {
+    console.log("[v0] ProjectDialog - handleDotClick called with index:", index)
     if (index !== currentScreenshot) {
       setIsTransitioning(true)
       setTimeout(() => {
@@ -86,13 +107,13 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-8 md:p-4"
       onClick={onClose}
     >
       <div className="relative" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onClose}
-          className="absolute -top-6 -right-6 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.8)] cursor-pointer"
+          className="absolute -top-6 -right-6 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.9)] cursor-pointer"
           aria-label="Cerrar"
         >
           <CloseIcon />
@@ -102,14 +123,14 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
           <>
             <button
               onClick={handlePrevScreenshot}
-              className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.8)]"
+              className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-yellow-400 hover:bg-yellow-500 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-[0_10px_40px_rgba(0,0,0,0.9)]"
               aria-label="Anterior"
             >
               <ChevronLeftIcon />
             </button>
             <button
               onClick={handleNextScreenshot}
-              className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.8)]"
+              className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-yellow-400 hover:bg-yellow-500 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-[0_10px_40px_rgba(0,0,0,0.9)]"
               aria-label="Siguiente"
             >
               <ChevronRightIcon />

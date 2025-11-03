@@ -208,12 +208,13 @@
 
 /* Added sequential service hover animations */
 /* Updated service hover animation to maintain left border after animation */
+/* Updated service hover animation to start earlier */
 @keyframes service-hover {
   0% {
     border-left-color: transparent;
     background-color: transparent;
   }
-  10%,
+  8%,
   100% {
     border-left-color: rgb(250 204 21);
     background-color: rgba(250, 204, 21, 0.05);
@@ -221,23 +222,23 @@
 }
 
 .animate-service-hover-1 {
-  animation: service-hover 6s ease-in-out forwards;
+  animation: service-hover 5s ease-in-out forwards;
   animation-delay: 0s;
 }
 
 .animate-service-hover-2 {
-  animation: service-hover 6s ease-in-out forwards;
-  animation-delay: 0.4s;
+  animation: service-hover 5s ease-in-out forwards;
+  animation-delay: 0.3s;
 }
 
 .animate-service-hover-3 {
-  animation: service-hover 6s ease-in-out forwards;
-  animation-delay: 0.8s;
+  animation: service-hover 5s ease-in-out forwards;
+  animation-delay: 0.6s;
 }
 
 .animate-service-hover-4 {
-  animation: service-hover 6s ease-in-out forwards;
-  animation-delay: 1.2s;
+  animation: service-hover 5s ease-in-out forwards;
+  animation-delay: 0.9s;
 }
 
 /* Added 3D perspective styles for service images */

@@ -15,7 +15,7 @@ import WhatsAppIcon from "./components/icons/WhatsAppIcon"
 import HandshakeIcon from "./components/icons/HandshakeIcon"
 import { sendContactEmail } from "./actions/send-email"
 import { services } from "./data/services"
-import ProjectDialog from "./components/ProjectDialog"
+import ProjectsSection from "./components/ProjectsSection"
 
 declare global {
   interface Window {
@@ -25,7 +25,6 @@ declare global {
 
 export default function Home() {
   const [headerVisible, setHeaderVisible] = useState(false)
-  const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [servicesAnimated, setServicesAnimated] = useState(false)
   const servicesRef = useRef<HTMLDivElement>(null)
@@ -44,6 +43,11 @@ export default function Home() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [honeypot, setHoneypot] = useState("")
   const [formMountTime, setFormMountTime] = useState<number>(0)
+
+  useEffect(() => {
+    setFormMountTime(Date.now())
+    console.log("[v0] Home page loaded")
+  }, [])
 
   useEffect(() => {
     if (menuOpen) {
@@ -77,18 +81,24 @@ export default function Home() {
   }, [headerVisible, servicesAnimated])
 
   useEffect(() => {
+    let rafId: number | null = null
+
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20
-      const y = (e.clientY / window.innerHeight - 0.5) * 20
-      setMousePosition({ x, y })
+      if (rafId) return
+
+      rafId = requestAnimationFrame(() => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 20
+        const y = (e.clientY / window.innerHeight - 0.5) * 20
+        setMousePosition({ x, y })
+        rafId = null
+      })
     }
 
     window.addEventListener("mousemove", handleMouseMove)
-    console.log("[v0] Home page loaded")
-    setFormMountTime(Date.now())
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
+      if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
 
@@ -128,51 +138,6 @@ export default function Home() {
       sliderRef.current.scrollBy({ left: slideWidth, behavior: "smooth" })
     }
   }
-
-  const projects = [
-    {
-      id: 1,
-      name: "Dr. Zakharenko",
-      category: "Veterinario",
-      description: "Sitio web profesional para consultorio veterinario.",
-      image: "/projects/drzakharenko-1.webp",
-      screenshots: ["/projects/drzakharenko-1.webp", "/projects/drzakharenko-2.webp", "/projects/drzakharenko-3.webp"],
-      mobileScreenshots: [
-        "/projects/drzakharenko-mobile-1.webp",
-        "/projects/drzakharenko-mobile-2.webp",
-        "/projects/drzakharenko-mobile-3.webp",
-      ],
-      url: "https://drzakharenko.com.ar",
-    },
-    {
-      id: 2,
-      name: "Kalahari Biocare",
-      category: "Productor",
-      description: "Sitio web para productor de aceites naturales y mayorista para empresas cosméticas.",
-      image: "/projects/kalahari-1.webp",
-      screenshots: ["/projects/kalahari-1.webp", "/projects/kalahari-2.webp", "/projects/kalahari-3.webp"],
-      mobileScreenshots: [
-        "/projects/kalahari-mobile-1.webp",
-        "/projects/kalahari-mobile-2.webp",
-        "/projects/kalahari-mobile-3.webp",
-      ],
-      url: "https://kalaharibiocare.com",
-    },
-    {
-      id: 3,
-      name: "Abogado",
-      category: "Legal",
-      description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
-      image: "/projects/abogado-1.webp",
-      screenshots: ["/projects/abogado-1.webp", "/projects/abogado-2.webp", "/projects/abogado-3.webp"],
-      mobileScreenshots: [
-        "/projects/abogado-mobile-1.webp",
-        "/projects/abogado-mobile-2.webp",
-        "/projects/abogado-mobile-3.webp",
-      ],
-      url: "https://abogado-demo-2.vercel.app",
-    },
-  ]
 
   const testimonials = [
     {
@@ -241,15 +206,13 @@ export default function Home() {
     }
   }
 
-  const selectedProjectData = projects.find((p) => p.id === selectedProject) || null
-
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
       <div className="relative">
         <Header />
 
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center pt-24 pb-16 md:pb-0 overflow-hidden">
+        <section className="relative min-h-screen flex items-center justify-center pt-24 pb-16 md:pb-0 overflow-hidden select-none">
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <img src="/space-1.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
@@ -317,7 +280,7 @@ export default function Home() {
         </section>
 
         {/* Services Section */}
-        <section ref={servicesRef} className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32">
+        <section ref={servicesRef} className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32 select-none">
           <div className="container mx-auto px-4 md:px-8">
             <div className="space-y-8 md:space-y-12">
               {/* Header */}
@@ -346,9 +309,12 @@ export default function Home() {
                   {services.slice(0, 4).map((service, index) => (
                     <div
                       key={service.id}
-                      className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-700 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 ${
+                      className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-700 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 group ${
                         servicesAnimated ? `animate-service-hover-${index + 1}` : ""
                       }`}
+                      style={{
+                        animationDelay: servicesAnimated ? `${index * 0.3}s` : "0s",
+                      }}
                     >
                       <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{service.title}</h3>
                       <p className="text-gray-300 text-sm">{service.shortDescription}</p>
@@ -377,7 +343,7 @@ export default function Home() {
         </section>
 
         {/* Slider Section */}
-        <section className="relative py-16 md:py-32 bg-[#1e1e1e]">
+        <section className="relative py-16 md:py-32 bg-[#1e1e1e] select-none">
           <div className="container mx-auto px-4 md:px-8">
             {/* Slider Container */}
             <div className="relative">
@@ -405,7 +371,7 @@ export default function Home() {
                         {currentSlide > 0 && (
                           <button
                             onClick={scrollLeft}
-                            className="lg:hidden absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50"
+                            className="lg:hidden absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50 cursor-pointer"
                             aria-label="Servicio anterior"
                           >
                             <svg
@@ -423,7 +389,7 @@ export default function Home() {
                         {currentSlide < services.length - 1 && (
                           <button
                             onClick={scrollRight}
-                            className="lg:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50"
+                            className="lg:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50 cursor-pointer"
                             aria-label="Siguiente servicio"
                           >
                             <svg
@@ -500,7 +466,7 @@ export default function Home() {
               {currentSlide > 0 && (
                 <button
                   onClick={scrollLeft}
-                  className="hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
+                  className="hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400 cursor-pointer"
                   aria-label="Servicio anterior"
                 >
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
@@ -512,7 +478,7 @@ export default function Home() {
               {currentSlide < services.length - 1 && (
                 <button
                   onClick={scrollRight}
-                  className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400"
+                  className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400 cursor-pointer"
                   aria-label="Siguiente servicio"
                 >
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
@@ -522,7 +488,7 @@ export default function Home() {
               )}
 
               {/* Slider Navigation Dots */}
-              <div className="flex justify-center gap-3 mt-8">
+              <div className="flex justify-center gap-2 mt-8 py-2 px-4">
                 {services.map((_, index) => (
                   <button
                     key={index}
@@ -532,8 +498,8 @@ export default function Home() {
                         sliderRef.current.scrollTo({ left: scrollAmount, behavior: "smooth" })
                       }
                     }}
-                    className={`w-3 h-3 rounded-full border-2 border-yellow-400 transition-all duration-300 ${
-                      currentSlide === index ? "bg-yellow-400 scale-125" : "hover:bg-yellow-400"
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      currentSlide === index ? "bg-yellow-400 w-8" : "bg-gray-400 hover:bg-gray-300 w-2"
                     }`}
                     aria-label={`Ir a servicio ${index + 1}`}
                   />
@@ -549,7 +515,7 @@ export default function Home() {
         </section>
 
         {/* Benefits Section */}
-        <section className="relative min-h-screen py-16 md:py-32 overflow-hidden">
+        <section className="relative min-h-screen py-16 md:py-32 overflow-hidden select-none">
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <img src="/space-2.webp" alt="" className="w-full h-full object-cover opacity-60 animate-space-pan-slow" />
@@ -683,7 +649,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-32 bg-[#1e1e1e]">
+        <section className="relative py-16 md:py-32 bg-[#1e1e1e] select-none">
           <div className="container mx-auto px-4 md:px-8">
             {/* Header */}
             <div className="text-center mb-12 md:mb-16">
@@ -730,71 +696,14 @@ export default function Home() {
         </section>
 
         {/* Projects Section */}
-        <section className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32">
-          <div className="container mx-auto px-4 md:px-8">
-            {/* Header */}
-            <div className="text-center mb-12 md:mb-16">
-              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTRO TRABAJO</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
-                PROYECTOS REALIZADOS
-              </h2>
-              <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto px-4">
-                Mirá algunos de los sitios web que hemos creado para nuestros clientes
-              </p>
-            </div>
-
-            {/* Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-              {projects.map((project) => (
-                <div
-                  key={project.id}
-                  onClick={() => setSelectedProject(project.id)}
-                  className="group relative overflow-hidden rounded-lg border border-gray-700 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-4 md:p-6 bg-[#2a2a2a]/70">
-                    <span className="inline-block px-3 py-1 bg-yellow-400/10 text-yellow-400 text-xs rounded-full mb-3">
-                      {project.category}
-                    </span>
-                    <h3 className="text-lg md:text-xl font-bold mb-2">{project.name}</h3>
-                    <p className="text-xs md:text-sm text-gray-300">{project.description}</p>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1e1e1e] via-[#1e1e1e]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p className="text-xs md:text-sm text-yellow-400 font-bold">Click para ver más</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Button */}
-            <div className="text-center">
-              <Link
-                href="/proyectos"
-                className="inline-block px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
-              >
-                Ver Todos los Proyectos
-              </Link>
-            </div>
-          </div>
+        <section className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32 select-none">
+          <ProjectsSection showAll={false} showHeader={true} showCTA={true} />
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">05</span>
             <span className="text-gray-500"> / 06</span>
           </div>
         </section>
-
-        {/* Project Modal */}
-        {selectedProject && (
-          <div className="fixed inset-0 bg-[#1e1e1e]/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <ProjectDialog project={selectedProjectData} onClose={() => setSelectedProject(null)} />
-          </div>
-        )}
 
         {/* Contact Section */}
         <section ref={contactRef} className="relative min-h-screen py-16 md:py-32 overflow-hidden">
