@@ -142,7 +142,8 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
           <img
             src={screenshots[currentScreenshot] || "/placeholder.svg"}
             alt={`${project.name} - Screenshot ${currentScreenshot + 1}`}
-            className={`w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${
+            onClick={handleNextScreenshot}
+            className={`w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 cursor-pointer ${
               isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           />

@@ -30,6 +30,10 @@ export default function Home() {
   const servicesRef = useRef<HTMLDivElement>(null)
   const contactRef = useRef<HTMLDivElement>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
+  const teamRef = useRef<HTMLDivElement>(null)
+  const [teamAnimated, setTeamAnimated] = useState(false)
+  const [yearsCount, setYearsCount] = useState(0)
+  const [projectsCount, setProjectsCount] = useState(0)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [currentSlide, setCurrentSlide] = useState(0) // Track current slide for highlighting
 
@@ -116,6 +120,60 @@ export default function Home() {
     slider.addEventListener("scroll", handleScroll)
     return () => slider.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    const teamSection = teamRef.current
+    if (!teamSection) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !teamAnimated) {
+            setTeamAnimated(true)
+
+            // Animate years counter (0 to 5)
+            const yearsDuration = 2000 // 2 seconds
+            const yearsTarget = 5
+            const yearsIncrement = yearsTarget / (yearsDuration / 16) // 60fps
+            let yearsCurrentCount = 0
+
+            const yearsInterval = setInterval(() => {
+              yearsCurrentCount += yearsIncrement
+              if (yearsCurrentCount >= yearsTarget) {
+                setYearsCount(yearsTarget)
+                clearInterval(yearsInterval)
+              } else {
+                setYearsCount(Math.floor(yearsCurrentCount))
+              }
+            }, 16)
+
+            // Animate projects counter (0 to 50)
+            const projectsDuration = 2000 // 2 seconds
+            const projectsTarget = 50
+            const projectsIncrement = projectsTarget / (projectsDuration / 16) // 60fps
+            let projectsCurrentCount = 0
+
+            const projectsInterval = setInterval(() => {
+              projectsCurrentCount += projectsIncrement
+              if (projectsCurrentCount >= projectsTarget) {
+                setProjectsCount(projectsTarget)
+                clearInterval(projectsInterval)
+              } else {
+                setProjectsCount(Math.floor(projectsCurrentCount))
+              }
+            }, 16)
+          }
+        })
+      },
+      { threshold: 0.3 },
+    )
+
+    observer.observe(teamSection)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [teamAnimated])
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -266,7 +324,7 @@ export default function Home() {
                   onClick={scrollToContact}
                   className="px-6 md:px-8 py-3 md:py-4 border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                 >
-                  Conectá con Nosotros
+                  Tu sitio web en 3 días
                 </button>
               </div>
             </div>
@@ -649,52 +707,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative py-16 md:py-32 bg-[#1e1e1e] select-none">
-          <div className="container mx-auto px-4 md:px-8">
-            {/* Header */}
-            <div className="text-center mb-12 md:mb-16">
-              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">TESTIMONIOS</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
-                LO QUE DICEN NUESTROS CLIENTES
-              </h2>
-              <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
-                La satisfacción de nuestros clientes es nuestra mejor carta de presentación
-              </p>
-            </div>
-
-            {/* Testimonials Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="bg-[#2a2a2a] border border-gray-700 rounded-lg p-6 md:p-8 hover:border-yellow-400 transition-all duration-300"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-yellow-400/10 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={testimonial.image || "/placeholder.svg?height=64&width=64"}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold">{testimonial.name}</h3>
-                      <p className="text-sm text-gray-400">{testimonial.role}</p>
-                      <p className="text-xs text-yellow-400">{testimonial.company}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-300 text-sm leading-relaxed italic">"{testimonial.text}"</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
-            <span className="text-yellow-400 text-xl md:text-2xl">04</span>
-            <span className="text-gray-500"> / 06</span>
-          </div>
-        </section>
-
         {/* Projects Section */}
         <section className="relative min-h-screen bg-[#1e1e1e] py-16 md:py-32 select-none">
           <ProjectsSection showAll={false} showHeader={true} showCTA={true} />
@@ -702,6 +714,87 @@ export default function Home() {
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">05</span>
             <span className="text-gray-500"> / 06</span>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section ref={teamRef} className="relative py-16 md:py-32 bg-[#1e1e1e] select-none">
+          <div className="container mx-auto px-4 md:px-8">
+            {/* Header */}
+            <div className="text-center mb-12 md:mb-16">
+              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">QUIÉN ESTÁ DETRÁS</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">
+                Conocé al Equipo
+              </h2>
+            </div>
+
+            {/* Content Grid - Using flex on mobile for custom order, grid on desktop */}
+            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-8 md:gap-12 lg:items-center">
+              {/* Name and Title - Order 1 on mobile, part of right column on desktop */}
+              <div className="order-1 lg:order-2 lg:col-span-3 space-y-2">
+                <h3 className="text-4xl md:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">Rodion</h3>
+                <div className="flex items-center gap-3">
+                  <div className="h-1 w-12 bg-yellow-400"></div>
+                  <p className="text-xl md:text-2xl text-yellow-400 font-bold">Fundador</p>
+                </div>
+              </div>
+
+              <div className="order-2 lg:order-2 lg:col-span-3 lg:col-start-3 space-y-4 text-base md:text-lg text-gray-300 leading-relaxed">
+                <p className="text-lg md:text-xl text-white font-semibold">Tratamos tu negocio si fuera nuestro.</p>
+              </div>
+
+              <div className="order-3 lg:order-1 lg:col-span-2 lg:row-span-4 flex justify-center">
+                <div className="relative group">
+                  {/* Yellow accent background */}
+                  <div className="absolute -inset-4 bg-yellow-400/10 rounded-3xl blur-xl group-hover:bg-yellow-400/20 transition-all duration-500"></div>
+
+                  {/* Image container */}
+                  <div className="relative rounded-2xl overflow-hidden group-hover:border-yellow-400 transition-all duration-300 shadow-2xl">
+                    <img
+                      src="/teammembers/rodion.webp"
+                      alt="Rodion - Fundador"
+                      className="w-full h-auto object-contain max-w-sm mx-auto"
+                    />
+                    {/* Gradient overlay at bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="order-4 lg:order-2 lg:col-span-3 lg:col-start-3 space-y-4 text-base md:text-lg text-gray-300 leading-relaxed">
+                <p>
+                  Sin atajos, sin complicaciones: desde el primer día, hacemos todo bien. Nosotros nos ocupamos de toda
+                  la parte del sitio web para que vos puedas enfocarte en hacer crecer tu negocio. Contás con nosotros y
+                  nosotros cumplimos, siempre. Somos directos, sin costos ocultos ni sorpresas desagradables
+                </p>
+                <p className="text-yellow-400 font-semibold italic">Tu éxito online es nuestro compromiso.</p>
+              </div>
+
+              <div className="order-5 lg:order-2 lg:col-span-3 lg:col-start-3">
+                <div className="grid grid-cols-2 gap-4 pt-4">
+                  <div className="p-4 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700">
+                    <p className="text-2xl md:text-3xl font-bold text-yellow-400">{yearsCount}+</p>
+                    <p className="text-sm text-gray-400">Años de Experiencia</p>
+                  </div>
+                  <div className="p-4 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700">
+                    <p className="text-2xl md:text-3xl font-bold text-yellow-400">{projectsCount}+</p>
+                    <p className="text-sm text-gray-400">Proyectos Completados</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="order-6 lg:order-2 lg:col-span-3 lg:col-start-3 pt-4">
+                <Link
+                  href="/nosotros"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold shadow-lg hover:shadow-yellow-400/50"
+                >
+                  Conocé Más Sobre Nosotros
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
