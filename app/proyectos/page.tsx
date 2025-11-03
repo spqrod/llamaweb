@@ -53,6 +53,11 @@ export default function ProjectsPage() {
       category: "Portfolio",
       image: "/projects/daria-1.webp",
       screenshots: ["/projects/daria-1.webp", "/projects/daria-2.webp", "/projects/daria-3.webp"],
+      mobileScreenshots: [
+        "/projects/daria-mobile-1.webp",
+        "/projects/daria-mobile-2.webp",
+        "/projects/daria-mobile-3.webp",
+      ],
       url: "https://dariazherebtsova.com",
       description: "Portfolio profesional para artista visual con galería de trabajos.",
     },
@@ -62,6 +67,11 @@ export default function ProjectsPage() {
       category: "Turismo",
       image: "/projects/duiker-1.webp",
       screenshots: ["/projects/duiker-1.webp", "/projects/duiker-2.webp"],
+      mobileScreenshots: [
+        "/projects/duiker-mobile-1.webp",
+        "/projects/duiker-mobile-2.webp",
+        "/projects/duiker-mobile-3.webp",
+      ],
       url: "https://duikertravel.com",
       description: "Sitio web para agencia de viajes con información de destinos y paquetes turísticos.",
     },

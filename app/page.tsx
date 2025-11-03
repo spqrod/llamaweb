@@ -137,6 +137,11 @@ export default function Home() {
       description: "Sitio web profesional para consultorio veterinario.",
       image: "/projects/drzakharenko-1.webp",
       screenshots: ["/projects/drzakharenko-1.webp", "/projects/drzakharenko-2.webp", "/projects/drzakharenko-3.webp"],
+      mobileScreenshots: [
+        "/projects/drzakharenko-mobile-1.webp",
+        "/projects/drzakharenko-mobile-2.webp",
+        "/projects/drzakharenko-mobile-3.webp",
+      ],
       url: "https://drzakharenko.com.ar",
     },
     {
@@ -146,6 +151,11 @@ export default function Home() {
       description: "Sitio web para productor de aceites naturales y mayorista para empresas cosméticas.",
       image: "/projects/kalahari-1.webp",
       screenshots: ["/projects/kalahari-1.webp", "/projects/kalahari-2.webp", "/projects/kalahari-3.webp"],
+      mobileScreenshots: [
+        "/projects/kalahari-mobile-1.webp",
+        "/projects/kalahari-mobile-2.webp",
+        "/projects/kalahari-mobile-3.webp",
+      ],
       url: "https://kalaharibiocare.com",
     },
     {

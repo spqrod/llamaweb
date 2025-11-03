@@ -113,14 +113,14 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
               <>
                 <button
                   onClick={handlePrevScreenshot}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer"
+                  className="absolute -left-6 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
                   aria-label="Anterior"
                 >
                   <ChevronLeftIcon />
                 </button>
                 <button
                   onClick={handleNextScreenshot}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer"
+                  className="absolute -right-6 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
                   aria-label="Siguiente"
                 >
                   <ChevronRightIcon />
