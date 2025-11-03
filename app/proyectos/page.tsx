@@ -44,6 +44,11 @@ export default function ProjectsPage() {
       category: "Legal",
       image: "/projects/abogado-1.webp",
       screenshots: ["/projects/abogado-1.webp", "/projects/abogado-2.webp", "/projects/abogado-3.webp"],
+      mobileScreenshots: [
+        "/projects/abogado-mobile-1.webp",
+        "/projects/abogado-mobile-2.webp",
+        "/projects/abogado-mobile-3.webp",
+      ],
       url: "https://abogado-demo-2.vercel.app",
       description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
     },

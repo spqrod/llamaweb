@@ -165,6 +165,11 @@ export default function Home() {
       description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
       image: "/projects/abogado-1.webp",
       screenshots: ["/projects/abogado-1.webp", "/projects/abogado-2.webp", "/projects/abogado-3.webp"],
+      mobileScreenshots: [
+        "/projects/abogado-mobile-1.webp",
+        "/projects/abogado-mobile-2.webp",
+        "/projects/abogado-mobile-3.webp",
+      ],
       url: "https://abogado-demo-2.vercel.app",
     },
   ]
@@ -235,6 +240,8 @@ export default function Home() {
       setIsSubmitting(false)
     }
   }
+
+  const selectedProjectData = projects.find((p) => p.id === selectedProject) || null
 
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
@@ -785,10 +792,7 @@ export default function Home() {
         {/* Project Modal */}
         {selectedProject && (
           <div className="fixed inset-0 bg-[#1e1e1e]/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <ProjectDialog
-              project={projects.find((p) => p.id === selectedProject) || null}
-              onClose={() => setSelectedProject(null)}
-            />
+            <ProjectDialog project={selectedProjectData} onClose={() => setSelectedProject(null)} />
           </div>
         )}
 

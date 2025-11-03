@@ -92,44 +92,40 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
       <div className="relative" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onClose}
-          className="absolute -top-6 -right-6 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-lg cursor-pointer"
+          className="absolute -top-6 -right-6 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.8)] cursor-pointer"
           aria-label="Cerrar"
         >
           <CloseIcon />
         </button>
 
-        <div className="relative overflow-hidden">
-          <div className="relative">
-            <img
-              src={screenshots[currentScreenshot] || "/placeholder.svg"}
-              alt={`${project.name} - Screenshot ${currentScreenshot + 1}`}
-              className={`w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${
-                isTransitioning ? "opacity-0" : "opacity-100"
-              }`}
-            />
+        {screenshots.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevScreenshot}
+              className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.8)]"
+              aria-label="Anterior"
+            >
+              <ChevronLeftIcon />
+            </button>
+            <button
+              onClick={handleNextScreenshot}
+              className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-[0_8px_30px_rgb(0,0,0,0.8)]"
+              aria-label="Siguiente"
+            >
+              <ChevronRightIcon />
+            </button>
+          </>
+        )}
 
-            {/* Navigation Arrows - Only show if more than 1 screenshot */}
-            {screenshots.length > 1 && (
-              <>
-                <button
-                  onClick={handlePrevScreenshot}
-                  className="absolute -left-6 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
-                  aria-label="Anterior"
-                >
-                  <ChevronLeftIcon />
-                </button>
-                <button
-                  onClick={handleNextScreenshot}
-                  className="absolute -right-6 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer shadow-lg"
-                  aria-label="Siguiente"
-                >
-                  <ChevronRightIcon />
-                </button>
-              </>
-            )}
-          </div>
+        <div className="relative">
+          <img
+            src={screenshots[currentScreenshot] || "/placeholder.svg"}
+            alt={`${project.name} - Screenshot ${currentScreenshot + 1}`}
+            className={`w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${
+              isTransitioning ? "opacity-0" : "opacity-100"
+            }`}
+          />
 
-          {/* Navigation Dots */}
           {screenshots.length > 1 && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 py-2 px-4 bg-black/50 rounded-full">
               {screenshots.map((_, index) => (
