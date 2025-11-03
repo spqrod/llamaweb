@@ -176,9 +176,9 @@ export default function Home() {
     },
     {
       id: 3,
-      name: "Carlos Mendoza",
-      role: "CEO",
-      company: "TechStart Argentina",
+      name: "Dr. Mendoza",
+      role: "Abogado",
+      company: "Consultorio particular",
       text: "El equipo de Llama Web transformó nuestra visión en realidad. El sitio es moderno, rápido y exactamente lo que necesitábamos para crecer.",
       image: "/testimonials/carlos.jpg",
     },
@@ -260,7 +260,7 @@ export default function Home() {
                     onClick={scrollToContact}
                     className="px-6 md:px-8 py-3 md:py-4 border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                   >
-                    Conectá con Nosotros
+                    Tu sitio web en 3 días
                   </button>
                 </div>
               </div>
@@ -431,8 +431,7 @@ export default function Home() {
                               alt={service.title}
                               className="w-full h-auto object-contain rounded-xl"
                               style={{
-                                boxShadow:
-                                  "20px 20px 60px rgba(0, 0, 0, 0.8), -10px -10px 40px rgba(250, 204, 21, 0.1)",
+                                boxShadow: "6px 6px 20px rgba(0, 0, 0, 0.4), -3px -3px 12px rgba(250, 204, 21, 0.05)",
                               }}
                             />
                           </div>
@@ -808,16 +807,12 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-8 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
               {/* Left Column - Info */}
-              <div className="space-y-6 md:space-y-8 text-center lg:text-left">
+              <div className="w-full space-y-6 md:space-y-8 text-center lg:text-left">
                 <div>
                   <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">HABLEMOS</p>
                   <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
                     EMPECEMOS TU PROYECTO
                   </h2>
-                  <p className="text-base md:text-lg text-gray-300">
-                    ¿Tenés una idea? Estamos listos para hacerla realidad. Contactanos y llevemos tu negocio al
-                    siguiente nivel.
-                  </p>
                 </div>
                 <div className="flex gap-4 justify-center lg:justify-start">
                   <a
