@@ -135,7 +135,7 @@ export default function Home() {
       name: "Dr. Zakharenko",
       category: "Veterinaria",
       description: "Sitio web profesional para consultorio veterinario con sistema de turnos online.",
-      image: "/projects/drzakharenko-screenshot.webp",
+      image: "/projects/drzakharenko-1.webp",
       url: "https://drzakharenko.com.ar",
     },
     {
@@ -143,17 +143,16 @@ export default function Home() {
       name: "Kalahari Biocare",
       category: "E-commerce",
       description: "Tienda online de productos naturales y cosméticos con carrito de compras integrado.",
-      image: "/projects/kalaharibiocare-screenshot.webp",
+      image: "/projects/kalahari-1.webp",
       url: "https://kalaharibiocare.com",
     },
     {
       id: 3,
-      name: "Duiker Travel",
-      category: "Turismo",
-      description: "Agencia de viajes con catálogo de destinos y sistema de reservas.",
-      image:
-        "https://xurtccytrzafbfk3.public.blob.vercel-storage.com/agent-assets/ef9e8de27250caf1486db88802a7495f07778bce3fc7bde78f6a8d6d541259d0.jpeg",
-      url: "https://duikertravels.com",
+      name: "Abogado",
+      category: "Legal",
+      description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
+      image: "/projects/abogado-1.webp",
+      url: "https://abogado-demo-2.vercel.app",
     },
   ]
 
@@ -164,15 +163,15 @@ export default function Home() {
       role: "Veterinario",
       company: "Consultorio Veterinario",
       text: "Excelente trabajo. El sitio web superó mis expectativas y mis clientes ahora pueden agendar turnos fácilmente. Muy profesionales y rápidos.",
-      image: "/testimonials/zakharenko.jpg",
+      image: "/testimonials/zakharenko.webp",
     },
     {
       id: 2,
       name: "Monica Robson",
       role: "Directora",
       company: "Kalahari Biocare",
-      text: "Nuestra tienda online está funcionando perfectamente. Totalmente recomendados.", // Removed sales increase claim
-      image: "/testimonials/monica.jpg",
+      text: "Nuestra tienda online está funcionando perfectamente. Totalmente recomendados.",
+      image: "/testimonials/monica.webp",
     },
     {
       id: 3,

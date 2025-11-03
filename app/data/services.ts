@@ -16,8 +16,8 @@ export const services: Service[] = [
     title: "Landing Page",
     slug: "landing-page",
     description:
-      "Páginas de aterrizaje diseñadas para convertir visitantes en clientes. Optimizadas para velocidad, SEO y conversión.",
-    shortDescription: "Página única optimizada para convertir visitantes en clientes",
+      "Una sola página web diseñada para convertir visitantes en clientes. Ideal para promocionar un producto, servicio o evento específico. Todo el contenido está en una única página optimizada para velocidad, SEO y conversión.",
+    shortDescription: "Sitio web de una sola página optimizado para convertir visitantes en clientes",
     features: [
       "Diseño personalizado a tu marca",
       "Dominio web, Hosting Premium y 1 Correo Corporativo",
@@ -25,16 +25,16 @@ export const services: Service[] = [
       "Botón de WhatsApp",
       "Integración con Google Analytics",
     ],
-    time: "Desde 3 días",
-    price: "Desde $200.000",
+    time: "3 días",
+    price: "$200.000",
   },
   {
     id: "sitio-web-institucional",
     title: "Sitio web institucional",
     slug: "sitio-web-institucional",
     description:
-      "Sitios web completos para empresas que buscan establecer su presencia digital profesional y atraer nuevos clientes.",
-    shortDescription: "Sitio web completo para establecer tu presencia digital profesional",
+      "Sitio web completo con múltiples páginas (aproximadamente 5 páginas: Inicio, Servicios, Nosotros, Contacto, etc.). Ideal para empresas que buscan establecer su presencia digital profesional con información detallada sobre sus servicios, equipo y valores.",
+    shortDescription: "Sitio web completo con múltiples páginas para establecer tu presencia digital profesional",
     features: [
       "Diseño personalizado a tu marca",
       "Dominio web, Hosting Premium y 1 Correo Corporativo",
@@ -43,8 +43,8 @@ export const services: Service[] = [
       "Botón de WhatsApp",
       "Integración con Google Analytics",
     ],
-    time: "Desde 5 días",
-    price: "Desde $300.000",
+    time: "5 días",
+    price: "$300.000",
   },
   {
     id: "tienda-online",

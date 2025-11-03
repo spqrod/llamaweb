@@ -5,16 +5,20 @@ import { useState } from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import CloseIcon from "../components/icons/CloseIcon"
+import ChevronLeftIcon from "../components/icons/ChevronLeftIcon"
+import ChevronRightIcon from "../components/icons/ChevronRightIcon"
 
 export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
+  const [currentScreenshot, setCurrentScreenshot] = useState(0)
 
   const projects = [
     {
       id: 1,
       name: "Dr. Zakharenko",
       category: "Médico",
-      image: "/projects/drzakharenko-screenshot.webp",
+      image: "/projects/drzakharenko-1.webp",
+      screenshots: ["/projects/drzakharenko-1.webp", "/projects/drzakharenko-2.webp", "/projects/drzakharenko-3.webp"],
       url: "https://drzakharenko.com.ar",
       description: "Sitio web profesional para consultorio médico con sistema de turnos online.",
     },
@@ -22,45 +26,42 @@ export default function ProjectsPage() {
       id: 2,
       name: "Kalahari Biocare",
       category: "E-commerce",
-      image: "/projects/kalaharibiocare-screenshot.webp",
+      image: "/projects/kalahari-1.webp",
+      screenshots: ["/projects/kalahari-1.webp", "/projects/kalahari-2.webp", "/projects/kalahari-3.webp"],
       url: "https://kalaharibiocare.com",
       description: "Tienda online de productos naturales y cosméticos con carrito de compras integrado.",
     },
     {
       id: 3,
-      name: "Duiker Travel",
-      category: "Turismo",
-      image:
-        "https://xurtccytrzafbfk3.public.blob.vercel-storage.com/agent-assets/ef9e8de27250caf1486db88802a7495f07778bce3fc7bde78f6a8d6d541259d0.jpeg",
-      url: "https://duikertravels.com",
-      description: "Agencia de viajes con catálogo de destinos y sistema de reservas.",
-    },
-    {
-      id: 4,
-      name: "Daria Zherebtsova",
-      category: "Portfolio",
-      image: "/projects/dariazherebtsova-screenshot.webp",
-      url: "https://dariazherebtsova.ru",
-      description: "Portfolio profesional para artista visual con galería de obras.",
-    },
-    {
-      id: 5,
-      name: "ImportBA",
-      category: "Servicios",
-      image:
-        "https://xurtccytrzafbfk3.public.blob.vercel-storage.com/agent-assets/c71b2fa4632229f69fe7fdf9848fca08764454a1617c78c14bfd0948c0e37015.jpeg",
-      url: "https://importba.vercel.app",
-      description: "Broker de importaciones en Buenos Aires con gestión integral de procesos.",
-    },
-    {
-      id: 6,
       name: "Abogado",
       category: "Legal",
-      image: "/projects/abogado-screenshot.jpg",
+      image: "/projects/abogado-1.webp",
+      screenshots: ["/projects/abogado-1.webp", "/projects/abogado-2.webp", "/projects/abogado-3.webp"],
       url: "https://abogado-demo-2.vercel.app",
       description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
     },
   ]
+
+  const handleProjectClick = (projectId: number) => {
+    setSelectedProject(projectId)
+    setCurrentScreenshot(0)
+  }
+
+  const handlePrevScreenshot = () => {
+    const project = projects.find((p) => p.id === selectedProject)
+    if (project) {
+      setCurrentScreenshot((prev) => (prev === 0 ? project.screenshots.length - 1 : prev - 1))
+    }
+  }
+
+  const handleNextScreenshot = () => {
+    const project = projects.find((p) => p.id === selectedProject)
+    if (project) {
+      setCurrentScreenshot((prev) => (prev === project.screenshots.length - 1 ? 0 : prev + 1))
+    }
+  }
+
+  const selectedProjectData = projects.find((p) => p.id === selectedProject)
 
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
@@ -91,7 +92,7 @@ export default function ProjectsPage() {
             {projects.map((project) => (
               <div
                 key={project.id}
-                onClick={() => setSelectedProject(project.id)}
+                onClick={() => handleProjectClick(project.id)}
                 className="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
               >
                 <div className="aspect-video overflow-hidden">
@@ -118,25 +119,78 @@ export default function ProjectsPage() {
       </section>
 
       {/* Project Modal */}
-      {selectedProject && (
+      {selectedProject && selectedProjectData && (
         <div
           className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedProject(null)}
         >
-          <div className="relative w-full max-w-6xl h-[85vh]">
+          <div className="relative w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setSelectedProject(null)}
-              className="absolute -top-6 -right-6 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-lg cursor-pointer"
+              className="absolute -top-12 right-0 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-lg cursor-pointer"
               aria-label="Cerrar"
             >
               <CloseIcon />
             </button>
-            <div className="w-full h-full rounded-lg overflow-hidden" onClick={(e) => e.stopPropagation()}>
-              <iframe
-                src={projects.find((p) => p.id === selectedProject)?.url}
-                className="w-full h-full rounded-lg"
-                title={projects.find((p) => p.id === selectedProject)?.name}
-              />
+
+            {/* Project Info */}
+            <div className="mb-6 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2">{selectedProjectData.name}</h3>
+              <p className="text-gray-300 mb-2">{selectedProjectData.description}</p>
+              <a
+                href={selectedProjectData.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-yellow-400 hover:text-yellow-500 transition-colors"
+              >
+                Visitar sitio web →
+              </a>
+            </div>
+
+            {/* Screenshot Slider */}
+            <div className="relative bg-[#2a2a2a] rounded-lg overflow-hidden">
+              <div className="aspect-video relative">
+                <img
+                  src={selectedProjectData.screenshots[currentScreenshot] || "/placeholder.svg"}
+                  alt={`${selectedProjectData.name} - Screenshot ${currentScreenshot + 1}`}
+                  className="w-full h-full object-contain"
+                />
+
+                {/* Navigation Arrows - Only show if more than 1 screenshot */}
+                {selectedProjectData.screenshots.length > 1 && (
+                  <>
+                    <button
+                      onClick={handlePrevScreenshot}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer"
+                      aria-label="Anterior"
+                    >
+                      <ChevronLeftIcon />
+                    </button>
+                    <button
+                      onClick={handleNextScreenshot}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer"
+                      aria-label="Siguiente"
+                    >
+                      <ChevronRightIcon />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {selectedProjectData.screenshots.length > 1 && (
+                <div className="flex justify-center gap-2 py-4 bg-[#2a2a2a]">
+                  {selectedProjectData.screenshots.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentScreenshot(index)}
+                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                        index === currentScreenshot ? "bg-yellow-400 w-8" : "bg-gray-600 hover:bg-gray-500 w-2"
+                      }`}
+                      aria-label={`Ver screenshot ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
