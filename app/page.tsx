@@ -16,6 +16,7 @@ import WhatsAppIcon from "./components/icons/WhatsAppIcon"
 import HandshakeIcon from "./components/icons/HandshakeIcon"
 import { sendContactEmail } from "./actions/send-email"
 import { services } from "./data/services"
+import ProjectDialog from "./components/ProjectDialog"
 
 declare global {
   interface Window {
@@ -136,6 +137,7 @@ export default function Home() {
       category: "Veterinaria",
       description: "Sitio web profesional para consultorio veterinario con sistema de turnos online.",
       image: "/projects/drzakharenko-1.webp",
+      screenshots: ["/projects/drzakharenko-1.webp", "/projects/drzakharenko-2.webp", "/projects/drzakharenko-3.webp"],
       url: "https://drzakharenko.com.ar",
     },
     {
@@ -144,6 +146,7 @@ export default function Home() {
       category: "E-commerce",
       description: "Tienda online de productos naturales y cosméticos con carrito de compras integrado.",
       image: "/projects/kalahari-1.webp",
+      screenshots: ["/projects/kalahari-1.webp", "/projects/kalahari-2.webp", "/projects/kalahari-3.webp"],
       url: "https://kalaharibiocare.com",
     },
     {
@@ -152,6 +155,7 @@ export default function Home() {
       category: "Legal",
       description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
       image: "/projects/abogado-1.webp",
+      screenshots: ["/projects/abogado-1.webp", "/projects/abogado-2.webp", "/projects/abogado-3.webp"],
       url: "https://abogado-demo-2.vercel.app",
     },
   ]
@@ -763,7 +767,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Section Number */}
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">05</span>
             <span className="text-gray-500"> / 06</span>
@@ -784,13 +787,10 @@ export default function Home() {
               >
                 <CloseIcon />
               </button>
-              <div className="w-full h-full rounded-lg overflow-hidden" onClick={(e) => e.stopPropagation()}>
-                <iframe
-                  src={projects.find((p) => p.id === selectedProject)?.url}
-                  className="w-full h-full rounded-lg"
-                  title={projects.find((p) => p.id === selectedProject)?.name}
-                />
-              </div>
+              <ProjectDialog
+                project={projects.find((p) => p.id === selectedProject) || null}
+                onClose={() => setSelectedProject(null)}
+              />
             </div>
           </div>
         )}

@@ -4,13 +4,10 @@ import Link from "next/link"
 import { useState } from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
-import CloseIcon from "../components/icons/CloseIcon"
-import ChevronLeftIcon from "../components/icons/ChevronLeftIcon"
-import ChevronRightIcon from "../components/icons/ChevronRightIcon"
+import ProjectDialog from "../components/ProjectDialog"
 
 export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
-  const [currentScreenshot, setCurrentScreenshot] = useState(0)
 
   const projects = [
     {
@@ -40,28 +37,27 @@ export default function ProjectsPage() {
       url: "https://abogado-demo-2.vercel.app",
       description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
     },
+    {
+      id: 4,
+      name: "Daria Zherebtsova",
+      category: "Portfolio",
+      image: "/projects/daria-1.webp",
+      screenshots: ["/projects/daria-1.webp", "/projects/daria-2.webp", "/projects/daria-3.webp"],
+      url: "https://dariazherebtsova.com",
+      description: "Portfolio profesional para artista visual con galería de trabajos.",
+    },
+    {
+      id: 5,
+      name: "Duiker Travel",
+      category: "Turismo",
+      image: "/projects/duiker-1.webp",
+      screenshots: ["/projects/duiker-1.webp", "/projects/duiker-2.webp"],
+      url: "https://duikertravel.com",
+      description: "Sitio web para agencia de viajes con información de destinos y paquetes turísticos.",
+    },
   ]
 
-  const handleProjectClick = (projectId: number) => {
-    setSelectedProject(projectId)
-    setCurrentScreenshot(0)
-  }
-
-  const handlePrevScreenshot = () => {
-    const project = projects.find((p) => p.id === selectedProject)
-    if (project) {
-      setCurrentScreenshot((prev) => (prev === 0 ? project.screenshots.length - 1 : prev - 1))
-    }
-  }
-
-  const handleNextScreenshot = () => {
-    const project = projects.find((p) => p.id === selectedProject)
-    if (project) {
-      setCurrentScreenshot((prev) => (prev === project.screenshots.length - 1 ? 0 : prev + 1))
-    }
-  }
-
-  const selectedProjectData = projects.find((p) => p.id === selectedProject)
+  const selectedProjectData = projects.find((p) => p.id === selectedProject) || null
 
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
@@ -92,7 +88,7 @@ export default function ProjectsPage() {
             {projects.map((project) => (
               <div
                 key={project.id}
-                onClick={() => handleProjectClick(project.id)}
+                onClick={() => setSelectedProject(project.id)}
                 className="group relative overflow-hidden rounded-lg border border-gray-800 hover:border-yellow-400 transition-all duration-300 cursor-pointer"
               >
                 <div className="aspect-video overflow-hidden">
@@ -119,82 +115,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Project Modal */}
-      {selectedProject && selectedProjectData && (
-        <div
-          className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedProject(null)}
-        >
-          <div className="relative w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute -top-12 right-0 z-10 bg-yellow-400 text-black p-3 rounded-full hover:bg-yellow-500 transition-all duration-300 shadow-lg cursor-pointer"
-              aria-label="Cerrar"
-            >
-              <CloseIcon />
-            </button>
-
-            {/* Project Info */}
-            <div className="mb-6 text-center">
-              <h3 className="text-2xl md:text-3xl font-bold mb-2">{selectedProjectData.name}</h3>
-              <p className="text-gray-300 mb-2">{selectedProjectData.description}</p>
-              <a
-                href={selectedProjectData.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block text-yellow-400 hover:text-yellow-500 transition-colors"
-              >
-                Visitar sitio web →
-              </a>
-            </div>
-
-            {/* Screenshot Slider */}
-            <div className="relative bg-[#2a2a2a] rounded-lg overflow-hidden">
-              <div className="aspect-video relative">
-                <img
-                  src={selectedProjectData.screenshots[currentScreenshot] || "/placeholder.svg"}
-                  alt={`${selectedProjectData.name} - Screenshot ${currentScreenshot + 1}`}
-                  className="w-full h-full object-contain"
-                />
-
-                {/* Navigation Arrows - Only show if more than 1 screenshot */}
-                {selectedProjectData.screenshots.length > 1 && (
-                  <>
-                    <button
-                      onClick={handlePrevScreenshot}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer"
-                      aria-label="Anterior"
-                    >
-                      <ChevronLeftIcon />
-                    </button>
-                    <button
-                      onClick={handleNextScreenshot}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-yellow-400/80 hover:bg-yellow-400 text-black p-3 rounded-full transition-all duration-300 cursor-pointer"
-                      aria-label="Siguiente"
-                    >
-                      <ChevronRightIcon />
-                    </button>
-                  </>
-                )}
-              </div>
-
-              {selectedProjectData.screenshots.length > 1 && (
-                <div className="flex justify-center gap-2 py-4 bg-[#2a2a2a]">
-                  {selectedProjectData.screenshots.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentScreenshot(index)}
-                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                        index === currentScreenshot ? "bg-yellow-400 w-8" : "bg-gray-600 hover:bg-gray-500 w-2"
-                      }`}
-                      aria-label={`Ver screenshot ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <ProjectDialog project={selectedProjectData} onClose={() => setSelectedProject(null)} />
 
       {/* CTA Section */}
       <section className="py-16 md:py-32 bg-gradient-to-b from-black to-gray-900">
