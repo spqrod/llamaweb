@@ -742,17 +742,17 @@ export default function Home() {
                 <p className="text-lg md:text-xl text-white font-semibold">Tratamos tu negocio si fuera nuestro.</p>
               </div>
 
-              <div className="order-3 lg:order-1 lg:col-span-2 lg:row-span-4 flex items-stretch">
-                <div className="relative group w-full">
+              <div className="order-3 lg:order-1 lg:col-span-2 lg:row-span-4 flex items-center justify-center">
+                <div className="relative group w-full max-w-xs lg:max-w-sm">
                   {/* Yellow accent background */}
                   <div className="absolute -inset-4 bg-yellow-400/10 rounded-3xl blur-xl group-hover:bg-yellow-400/20 transition-all duration-500"></div>
 
-                  {/* Image container - full height */}
-                  <div className="relative rounded-2xl overflow-hidden group-hover:border-yellow-400 transition-all duration-300 shadow-2xl h-full">
+                  {/* Image container - reduced size */}
+                  <div className="relative rounded-2xl overflow-hidden group-hover:border-yellow-400 transition-all duration-300 shadow-2xl">
                     <img
                       src="/teammembers/rodion.webp"
                       alt="Rodion - Fundador"
-                      className="w-full h-full object-cover object-center"
+                      className="w-full h-auto object-contain"
                     />
                     {/* Gradient overlay at bottom */}
                     <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -785,7 +785,7 @@ export default function Home() {
               <div className="order-6 lg:order-2 lg:col-span-3 lg:col-start-3 pt-4">
                 <Link
                   href="/nosotros"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold shadow-lg hover:shadow-yellow-400/50"
+                  className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                 >
                   Conocé Más Sobre Nosotros
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

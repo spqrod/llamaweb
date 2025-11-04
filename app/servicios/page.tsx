@@ -227,31 +227,58 @@ export default function ServicesPage() {
             className="min-h-screen flex items-center py-16 md:py-24 bg-[#1e1e1e]"
           >
             <div className="container mx-auto px-4 md:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
-                      SERVICIO {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-                      {service.title}
-                    </h2>
-                    <p className="text-lg text-gray-300 mb-8">{service.description}</p>
-                  </div>
+              <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-16 lg:items-center">
+                <div className="order-1 lg:order-none">
+                  <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                    SERVICIO {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
+                    {service.title}
+                  </h2>
+                </div>
 
-                  <div className="mb-8">
-                    <h4 className="text-sm font-bold text-yellow-400 mb-4">INCLUYE:</h4>
-                    <ul className="space-y-3">
-                      {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-base text-gray-300">
-                          <CheckCircleIcon className="text-yellow-400 w-5 h-5 flex-shrink-0 mt-1" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div className="order-2 lg:order-none lg:hidden">
+                  <p className="text-lg text-gray-300 mb-8">{service.description}</p>
+                </div>
 
-                  <div className="flex flex-wrap gap-6 mb-8">
+                <div className="hidden lg:block lg:order-none">
+                  <p className="text-lg text-gray-300 mb-8">{service.description}</p>
+                </div>
+
+                <div className="order-3 lg:order-last lg:pl-8">
+                  <div className="relative perspective-1000">
+                    <div
+                      className="transform transition-transform duration-200 ease-out"
+                      style={{
+                        transform: `perspective(1000px) rotateY(${-12 + mousePosition.x * 0.3}deg) rotateX(${5 + mousePosition.y * 0.3}deg)`,
+                      }}
+                    >
+                      <img
+                        src={serviceImages[service.id] || "/placeholder.svg"}
+                        alt={service.title}
+                        className="w-full h-auto object-cover rounded-xl"
+                        style={{
+                          boxShadow: "20px 20px 60px rgba(0, 0, 0, 0.8), -10px -10px 40px rgba(250, 204, 21, 0.1)",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="order-4 lg:order-none">
+                  <h4 className="text-sm font-bold text-yellow-400 mb-4">INCLUYE:</h4>
+                  <ul className="space-y-3">
+                    {service.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-3 text-base text-gray-300">
+                        <CheckCircleIcon className="text-yellow-400 w-5 h-5 flex-shrink-0 mt-1" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="order-5 lg:order-none space-y-6">
+                  <div className="flex flex-wrap gap-6">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
                         <ClockIcon className="text-yellow-400 w-6 h-6" />
@@ -274,30 +301,10 @@ export default function ServicesPage() {
 
                   <Link
                     href="/contacto"
-                    className="inline-block px-8 py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
+                    className="inline-block px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                   >
                     Consultar
                   </Link>
-                </div>
-
-                <div className="lg:pl-8">
-                  <div className="relative perspective-1000">
-                    <div
-                      className="transform transition-transform duration-200 ease-out"
-                      style={{
-                        transform: `perspective(1000px) rotateY(${-12 + mousePosition.x * 0.3}deg) rotateX(${5 + mousePosition.y * 0.3}deg)`,
-                      }}
-                    >
-                      <img
-                        src={serviceImages[service.id] || "/placeholder.svg"}
-                        alt={service.title}
-                        className="w-full h-auto object-cover rounded-xl"
-                        style={{
-                          boxShadow: "20px 20px 60px rgba(0, 0, 0, 0.8), -10px -10px 40px rgba(250, 204, 21, 0.1)",
-                        }}
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
