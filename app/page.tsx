@@ -298,7 +298,7 @@ export default function Home() {
                   </p>
                   <button
                     onClick={scrollToContact}
-                    className="px-6 md:px-8 py-3 md:py-4 border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
+                    className="px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                   >
                     Tu sitio web en 3 días
                   </button>
@@ -322,7 +322,7 @@ export default function Home() {
                 </p>
                 <button
                   onClick={scrollToContact}
-                  className="px-6 md:px-8 py-3 md:py-4 border-2 border-white rounded-full hover:bg-white hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
+                  className="px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                 >
                   Tu sitio web en 3 días
                 </button>
@@ -330,10 +330,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Section Number */}
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">01</span>
-            <span className="text-gray-500"> / 06</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 
@@ -385,7 +384,7 @@ export default function Home() {
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">02</span>
-            <span className="text-gray-500"> / 06</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 
@@ -511,7 +510,7 @@ export default function Home() {
                         {/* Button */}
                         <Link
                           href="/servicios"
-                          className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
+                          className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
                         >
                           Ver Más Detalles
                         </Link>
@@ -568,7 +567,7 @@ export default function Home() {
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">03</span>
-            <span className="text-gray-500"> / 06</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 
@@ -703,7 +702,7 @@ export default function Home() {
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">04</span>
-            <span className="text-gray-500"> / 06</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 
@@ -713,7 +712,7 @@ export default function Home() {
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
             <span className="text-yellow-400 text-xl md:text-2xl">05</span>
-            <span className="text-gray-500"> / 06</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 
@@ -729,7 +728,7 @@ export default function Home() {
             </div>
 
             {/* Content Grid - Using flex on mobile for custom order, grid on desktop */}
-            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-8 md:gap-12 lg:items-center">
+            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-8 md:gap-12">
               {/* Name and Title - Order 1 on mobile, part of right column on desktop */}
               <div className="order-1 lg:order-2 lg:col-span-3 space-y-2">
                 <h3 className="text-4xl md:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">Rodion</h3>
@@ -743,17 +742,17 @@ export default function Home() {
                 <p className="text-lg md:text-xl text-white font-semibold">Tratamos tu negocio si fuera nuestro.</p>
               </div>
 
-              <div className="order-3 lg:order-1 lg:col-span-2 lg:row-span-4 flex justify-center">
-                <div className="relative group">
+              <div className="order-3 lg:order-1 lg:col-span-2 lg:row-span-4 flex items-stretch">
+                <div className="relative group w-full">
                   {/* Yellow accent background */}
                   <div className="absolute -inset-4 bg-yellow-400/10 rounded-3xl blur-xl group-hover:bg-yellow-400/20 transition-all duration-500"></div>
 
-                  {/* Image container */}
-                  <div className="relative rounded-2xl overflow-hidden group-hover:border-yellow-400 transition-all duration-300 shadow-2xl">
+                  {/* Image container - full height */}
+                  <div className="relative rounded-2xl overflow-hidden group-hover:border-yellow-400 transition-all duration-300 shadow-2xl h-full">
                     <img
                       src="/teammembers/rodion.webp"
                       alt="Rodion - Fundador"
-                      className="w-full h-auto object-contain max-w-sm mx-auto"
+                      className="w-full h-full object-cover object-center"
                     />
                     {/* Gradient overlay at bottom */}
                     <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -786,7 +785,7 @@ export default function Home() {
               <div className="order-6 lg:order-2 lg:col-span-3 lg:col-start-3 pt-4">
                 <Link
                   href="/nosotros"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold shadow-lg hover:shadow-yellow-400/50"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold shadow-lg hover:shadow-yellow-400/50"
                 >
                   Conocé Más Sobre Nosotros
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -795,6 +794,11 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          </div>
+
+          <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
+            <span className="text-yellow-400 text-xl md:text-2xl">06</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 
@@ -902,7 +906,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
                   </button>
@@ -923,8 +927,8 @@ export default function Home() {
           </div>
 
           <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-10 text-sm font-bold">
-            <span className="text-yellow-400 text-xl md:text-2xl">06</span>
-            <span className="text-gray-500"> / 06</span>
+            <span className="text-yellow-400 text-xl md:text-2xl">07</span>
+            <span className="text-gray-500"> / 07</span>
           </div>
         </section>
 

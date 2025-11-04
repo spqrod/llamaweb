@@ -274,7 +274,7 @@ export default function ServicesPage() {
 
                   <Link
                     href="/contacto"
-                    className="inline-block px-8 py-4 border-2 border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
+                    className="inline-block px-8 py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
                   >
                     Consultar
                   </Link>
@@ -513,7 +513,7 @@ export default function ServicesPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 py-3 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
                 </button>
