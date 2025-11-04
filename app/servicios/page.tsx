@@ -227,8 +227,8 @@ export default function ServicesPage() {
             className="min-h-screen flex items-center py-16 md:py-24 bg-[#1e1e1e]"
           >
             <div className="container mx-auto px-4 md:px-8">
-              <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-16 lg:items-center">
-                <div className="order-1 lg:order-none">
+              <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-16 lg:items-start">
+                <div className="order-1 lg:col-start-1 lg:row-start-1">
                   <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
                     SERVICIO {String(index + 1).padStart(2, "0")}
                   </p>
@@ -237,15 +237,11 @@ export default function ServicesPage() {
                   </h2>
                 </div>
 
-                <div className="order-2 lg:order-none lg:hidden">
+                <div className="order-2 lg:col-start-1 lg:row-start-2">
                   <p className="text-lg text-gray-300 mb-8">{service.description}</p>
                 </div>
 
-                <div className="hidden lg:block lg:order-none">
-                  <p className="text-lg text-gray-300 mb-8">{service.description}</p>
-                </div>
-
-                <div className="order-3 lg:order-last lg:pl-8">
+                <div className="order-3 lg:col-start-2 lg:row-start-1 lg:row-span-5 lg:pl-8 lg:flex lg:items-center">
                   <div className="relative perspective-1000">
                     <div
                       className="transform transition-transform duration-200 ease-out"
@@ -265,7 +261,7 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <div className="order-4 lg:order-none">
+                <div className="order-4 lg:col-start-1 lg:row-start-3">
                   <h4 className="text-sm font-bold text-yellow-400 mb-4">INCLUYE:</h4>
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
@@ -277,7 +273,7 @@ export default function ServicesPage() {
                   </ul>
                 </div>
 
-                <div className="order-5 lg:order-none space-y-6">
+                <div className="order-5 lg:col-start-1 lg:row-start-4 space-y-6">
                   <div className="flex flex-wrap gap-6">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-full bg-yellow-400/10 flex items-center justify-center">
