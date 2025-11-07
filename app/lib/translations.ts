@@ -297,7 +297,7 @@ export const translations = {
     },
     hero: {
       tagline: "DIGITAL DONE RIGHT",
-      title: "WE BUILD WEBSITES",
+      title: "WE LAUNCH WEBSITES",
       description:
         "We create modern, professional websites that drive your business forward. Design, development, and launch of your digital presence in record time.",
       cta: "Your website in 3 days",
@@ -309,7 +309,7 @@ export const translations = {
       service: "SERVICE",
       time: "Time:",
       price: "Price:",
-      heroTitle: "WE CREATE YOUR WEBSITE",
+      heroTitle: "WE LAUNCH WEBSITES",
       heroDescription: "We transform ideas into digital experiences that drive your business growth",
       selectorHeading: "TYPES OF WEBSITES WE BUILD",
       selectorDescription: "Choose the service that best fits your needs",
