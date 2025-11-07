@@ -49,16 +49,6 @@ export default function Header() {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8">
-          <a
-            href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-yellow-400 transition-colors cursor-pointer"
-            aria-label="WhatsApp"
-          >
-            <WhatsAppIcon />
-          </a>
-          <LanguageToggle />
           <Link
             href={getPath("/servicios")}
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
@@ -83,6 +73,16 @@ export default function Header() {
           >
             {t.nav.contact}
           </Link>
+          <a
+            href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-yellow-400 transition-colors cursor-pointer"
+            aria-label="WhatsApp"
+          >
+            <WhatsAppIcon />
+          </a>
+          <LanguageToggle />
         </nav>
 
         <button
