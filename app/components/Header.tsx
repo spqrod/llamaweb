@@ -6,11 +6,14 @@ import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
 import WhatsAppIcon from "./icons/WhatsAppIcon"
 import CloseIcon from "./icons/CloseIcon"
+import { useLanguage } from "../contexts/LanguageContext"
+import LanguageToggle from "./LanguageToggle"
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
-  const isHome = pathname === "/"
+  const isHome = pathname === "/" || pathname === "/en"
+  const { t, getPath } = useLanguage()
 
   useEffect(() => {
     if (menuOpen) {
@@ -38,7 +41,7 @@ export default function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 bg-black/80 backdrop-blur-sm">
         <Link
-          href="/"
+          href={getPath("/")}
           onClick={handleLogoClick}
           className="text-2xl font-bold tracking-tight hover:opacity-80 transition-opacity font-[family-name:var(--font-poppins)] cursor-pointer"
         >
@@ -47,29 +50,30 @@ export default function Header() {
 
         <nav className="hidden lg:flex items-center gap-8">
           <Link
-            href="/servicios"
+            href={getPath("/servicios")}
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
-            Servicios
+            {t.nav.services}
           </Link>
           <Link
-            href="/proyectos"
+            href={getPath("/proyectos")}
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
-            Proyectos
+            {t.nav.projects}
           </Link>
           <Link
-            href="/nosotros"
+            href={getPath("/nosotros")}
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
-            Nosotros
+            {t.nav.about}
           </Link>
           <Link
-            href="/contacto"
+            href={getPath("/contacto")}
             className="text-base font-medium hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
           >
-            Contacto
+            {t.nav.contact}
           </Link>
+          <LanguageToggle />
           <a
             href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
             target="_blank"
@@ -107,7 +111,7 @@ export default function Header() {
           <div className="p-8">
             <div className="flex items-center justify-between mb-12">
               <Link
-                href="/"
+                href={getPath("/")}
                 onClick={() => {
                   setMenuOpen(false)
                   if (isHome) scrollToTop()
@@ -124,34 +128,38 @@ export default function Header() {
               </button>
             </div>
 
+            <div className="mb-8">
+              <LanguageToggle />
+            </div>
+
             <nav className="space-y-6">
               <Link
-                href="/servicios"
+                href={getPath("/servicios")}
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
-                Servicios
+                {t.nav.services}
               </Link>
               <Link
-                href="/proyectos"
+                href={getPath("/proyectos")}
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
-                Proyectos
+                {t.nav.projects}
               </Link>
               <Link
-                href="/nosotros"
+                href={getPath("/nosotros")}
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
-                Nosotros
+                {t.nav.about}
               </Link>
               <Link
-                href="/contacto"
+                href={getPath("/contacto")}
                 onClick={() => setMenuOpen(false)}
                 className="block text-3xl font-bold hover:text-yellow-400 transition-colors font-[family-name:var(--font-poppins)] cursor-pointer"
               >
-                Contacto
+                {t.nav.contact}
               </Link>
             </nav>
 
@@ -169,18 +177,18 @@ export default function Header() {
 
             <div className="mt-8">
               <Link
-                href="/privacidad"
+                href={getPath("/privacidad")}
                 onClick={() => setMenuOpen(false)}
                 className="block text-sm text-gray-400 hover:text-white transition-colors mb-2 cursor-pointer"
               >
-                Política de Privacidad
+                {t.nav.privacy}
               </Link>
               <Link
-                href="/terminos"
+                href={getPath("/terminos")}
                 onClick={() => setMenuOpen(false)}
                 className="block text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
               >
-                Términos de Servicio
+                {t.nav.terms}
               </Link>
             </div>
           </div>

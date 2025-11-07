@@ -4,8 +4,15 @@ import Link from "next/link"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import ProjectsSection from "../components/ProjectsSection"
+import { useLanguage } from "../contexts/LanguageContext"
 
 export default function ProjectsPage() {
+  const { t, language } = useLanguage()
+
+  const getPath = (path: string) => {
+    return language === "en" ? `/en${path}` : path
+  }
+
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
       <Header />
@@ -18,13 +25,11 @@ export default function ProjectsPage() {
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
-          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTRO PORTAFOLIO</p>
+          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">{t.projects.heroHeading}</p>
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-            PROYECTOS REALIZADOS
+            {t.projects.heroTitle}
           </h1>
-          <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
-            Explorá algunos de los sitios web que hemos creado para nuestros clientes
-          </p>
+          <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">{t.projects.heroDescription}</p>
         </div>
       </section>
 
@@ -37,16 +42,14 @@ export default function ProjectsPage() {
       <section className="py-16 md:py-32 bg-gradient-to-b from-black to-gray-900">
         <div className="container mx-auto px-4 md:px-8 text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-            ¿LISTO PARA TU PROYECTO?
+            {t.projects.ctaTitle}
           </h2>
-          <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Contactanos hoy y creemos juntos algo increíble
-          </p>
+          <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto">{t.projects.ctaDescription}</p>
           <Link
-            href="/contacto"
+            href={getPath("/contacto")}
             className="inline-block px-8 py-4 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold cursor-pointer"
           >
-            Empezar Ahora
+            {t.projects.ctaButton}
           </Link>
         </div>
       </section>

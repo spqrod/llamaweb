@@ -4,6 +4,7 @@ import type React from "react"
 import { Analytics } from "@vercel/analytics/next"
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
+import { LanguageProvider } from "./contexts/LanguageContext"
 
 export default function ClientLayout({
   children,
@@ -18,9 +19,9 @@ export default function ClientLayout({
   }, [pathname])
 
   return (
-    <>
+    <LanguageProvider>
       <div className="page-transition">{children}</div>
       <Analytics />
-    </>
+    </LanguageProvider>
   )
 }

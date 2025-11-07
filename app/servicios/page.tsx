@@ -13,10 +13,17 @@ import LightningIcon from "../components/icons/LightningIcon"
 import ShieldIcon from "../components/icons/ShieldIcon"
 import SearchIcon from "../components/icons/SearchIcon"
 import WhatsAppIcon from "../components/icons/WhatsAppIcon"
-import { services } from "../data/services"
+import { getServices } from "../data/services"
 import { sendContactEmail } from "../actions/send-email"
+import { useLanguage } from "../contexts/LanguageContext"
 
 export default function ServicesPage() {
+  // ============================================
+  // LANGUAGE CONTEXT
+  // ============================================
+  const { t, language, getPath } = useLanguage()
+  const services = getServices(language)
+
   // ============================================
   // STATE MANAGEMENT
   // ============================================
@@ -220,13 +227,11 @@ export default function ServicesPage() {
 
         {/* Hero content */}
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
-          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTROS SERVICIOS</p>
+          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">{t.services.heading}</p>
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-            CREAMOS TU SITIO WEB
+            {t.services.heroTitle}
           </h1>
-          <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
-            Transformamos ideas en experiencias digitales que impulsan el crecimiento de tu negocio
-          </p>
+          <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">{t.services.heroDescription}</p>
         </div>
       </section>
 
@@ -240,9 +245,9 @@ export default function ServicesPage() {
             {/* Section header */}
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
-                TIPOS DE SITIOS WEB QUE HACEMOS
+                {t.services.selectorHeading}
               </h2>
-              <p className="text-gray-400">Elegí el servicio que mejor se adapte a tus necesidades</p>
+              <p className="text-gray-400">{t.services.selectorDescription}</p>
             </div>
 
             {/* Service cards grid (2 columns on desktop) */}
@@ -264,7 +269,7 @@ export default function ServicesPage() {
 
             {/* Scroll indicator */}
             <div className="flex flex-col items-center mt-16 animate-bounce">
-              <p className="text-sm text-gray-400 mb-2">Scrolleá para ver más</p>
+              <p className="text-sm text-gray-400 mb-2">{t.services.scrollCta}</p>
               <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
@@ -292,7 +297,7 @@ export default function ServicesPage() {
                   {/* Service number and title */}
                   <div>
                     <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
-                      SERVICIO {String(index + 1).padStart(2, "0")}
+                      {t.services.service} {String(index + 1).padStart(2, "0")}
                     </p>
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
                       {service.title}
@@ -313,7 +318,7 @@ export default function ServicesPage() {
 
                   {/* Incluye list */}
                   <div>
-                    <h4 className="text-sm font-bold text-yellow-400 mb-4">INCLUYE:</h4>
+                    <h4 className="text-sm font-bold text-yellow-400 mb-4">{t.services.includes}</h4>
                     <ul className="space-y-3">
                       {service.features.map((feature, idx) => (
                         <li key={idx} className="flex items-start gap-3 text-base text-gray-300">
@@ -331,7 +336,7 @@ export default function ServicesPage() {
                         <ClockIcon className="text-yellow-400 w-6 h-6" />
                       </div>
                       <div>
-                        <p className="text-xs text-gray-500 uppercase">Tiempo</p>
+                        <p className="text-xs text-gray-500 uppercase">{t.services.time}</p>
                         <p className="text-lg font-bold">{service.time}</p>
                       </div>
                     </div>
@@ -341,7 +346,7 @@ export default function ServicesPage() {
                         <DollarIcon className="text-yellow-400 w-6 h-6" />
                       </div>
                       <div>
-                        <p className="text-xs text-gray-500 uppercase">Precio</p>
+                        <p className="text-xs text-gray-500 uppercase">{t.services.price}</p>
                         <p className="text-lg font-bold text-yellow-400">{service.price}</p>
                       </div>
                     </div>
@@ -349,10 +354,10 @@ export default function ServicesPage() {
 
                   {/* CTA Button */}
                   <Link
-                    href="/contacto"
+                    href={getPath("/contacto")}
                     className="inline-block px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                   >
-                    Consultar
+                    {t.services.consult}
                   </Link>
                 </div>
 
@@ -391,7 +396,7 @@ export default function ServicesPage() {
           {/* Section header */}
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-              TODOS SERVICIOS VIENEN CON:
+              {t.services.allInclude}
             </h2>
           </div>
 
@@ -414,7 +419,7 @@ export default function ServicesPage() {
                   <CheckCircleIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-1">Diseño Personalizado a tu Marca</h3>
+                  <h3 className="text-xl font-bold mb-1">{t.services.customDesign}</h3>
                 </div>
               </div>
 
@@ -424,11 +429,8 @@ export default function ServicesPage() {
                   <ShieldIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">La Garantía de 10 Años</h3>
-                  <p className="text-gray-300 text-sm">
-                    Garantizamos que tu sitio web estará funcionando bien por 10 años. Y si algo se rompe, lo arreglamos
-                    sin costo alguno para vos.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">{t.services.guarantee}</h3>
+                  <p className="text-gray-300 text-sm">{t.services.guaranteeDescription}</p>
                 </div>
               </div>
 
@@ -438,10 +440,8 @@ export default function ServicesPage() {
                   <CheckCircleIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">
-                    Dominio tumarca.com.ar, Hosting Premium y Correo Corporativo
-                  </h3>
-                  <p className="text-gray-300 text-sm">Por 1 año GRATIS</p>
+                  <h3 className="text-xl font-bold mb-2">{t.services.domainHosting}</h3>
+                  <p className="text-gray-300 text-sm">{t.services.domainHostingDescription}</p>
                 </div>
               </div>
 
@@ -451,10 +451,8 @@ export default function ServicesPage() {
                   <MobileIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Diseño Responsivo</h3>
-                  <p className="text-gray-300 text-sm">
-                    Perfectamente adaptado a todos los dispositivos: móviles, tablets y escritorio.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">{t.services.responsiveDesign}</h3>
+                  <p className="text-gray-300 text-sm">{t.services.responsiveDescription}</p>
                 </div>
               </div>
 
@@ -464,10 +462,8 @@ export default function ServicesPage() {
                   <LightningIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Velocidad Extrema</h3>
-                  <p className="text-gray-300 text-sm">
-                    Sitios optimizados que cargan en menos de 3 segundos, mejorando la experiencia del usuario.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">{t.services.extremeSpeed}</h3>
+                  <p className="text-gray-300 text-sm">{t.services.speedDescription}</p>
                 </div>
               </div>
 
@@ -477,10 +473,8 @@ export default function ServicesPage() {
                   <ShieldIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Seguridad Máxima</h3>
-                  <p className="text-gray-300 text-sm">
-                    Protección avanzada contra amenazas con certificados SSL y encriptación.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">{t.services.maxSecurity}</h3>
+                  <p className="text-gray-300 text-sm">{t.services.securityDescription}</p>
                 </div>
               </div>
 
@@ -490,10 +484,8 @@ export default function ServicesPage() {
                   <SearchIcon className="text-yellow-400 w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">SEO Optimizado</h3>
-                  <p className="text-gray-300 text-sm">
-                    Configuración técnica perfecta para que Google te encuentre y posicione.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">{t.services.seoOptimized}</h3>
+                  <p className="text-gray-300 text-sm">{t.services.seoDescription}</p>
                 </div>
               </div>
             </div>
@@ -520,14 +512,13 @@ export default function ServicesPage() {
             {/* ============================================ */}
             <div className="space-y-6 md:space-y-8 text-center lg:text-left">
               <div>
-                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">HABLEMOS</p>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
-                  EMPECEMOS TU PROYECTO
-                </h2>
-                <p className="text-base md:text-lg text-gray-300">
-                  ¿Tenés una idea? Estamos listos para hacerla realidad. Contactanos y llevemos tu negocio al siguiente
-                  nivel.
+                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                  {t.services.ctaHeading}
                 </p>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
+                  {t.services.ctaTitle}
+                </h2>
+                <p className="text-base md:text-lg text-gray-300">{t.services.ctaDescription}</p>
               </div>
 
               {/* WhatsApp CTA button */}
@@ -539,7 +530,7 @@ export default function ServicesPage() {
                   className="flex items-center gap-2 px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold text-sm md:text-base"
                 >
                   <WhatsAppIcon className="w-5 h-5" />
-                  WhatsApp
+                  {t.contact.whatsapp}
                 </a>
               </div>
             </div>
@@ -548,7 +539,7 @@ export default function ServicesPage() {
             {/* RIGHT COLUMN: Contact Form */}
             {/* ============================================ */}
             <div className="bg-[#2a2a2a]/40 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-700">
-              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">O completá el formulario</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t.services.formTitle}</h3>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Honeypot field (hidden, for spam prevention) */}
@@ -566,7 +557,7 @@ export default function ServicesPage() {
                 {/* Name field */}
                 <div>
                   <label htmlFor="services-name" className="block text-sm font-bold mb-2">
-                    Nombre
+                    {t.contact.name}
                   </label>
                   <input
                     type="text"
@@ -575,14 +566,14 @@ export default function ServicesPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/50 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
-                    placeholder="Tu nombre"
+                    placeholder={t.contact.namePlaceholder}
                   />
                 </div>
 
                 {/* Email field */}
                 <div>
                   <label htmlFor="services-email" className="block text-sm font-bold mb-2">
-                    Email
+                    {t.contact.email}
                   </label>
                   <input
                     type="email"
@@ -591,14 +582,14 @@ export default function ServicesPage() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/50 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
-                    placeholder="tu@email.com"
+                    placeholder={t.contact.emailPlaceholder}
                   />
                 </div>
 
                 {/* Phone field */}
                 <div>
                   <label htmlFor="services-phone" className="block text-sm font-bold mb-2">
-                    Teléfono
+                    {t.contact.phone}
                   </label>
                   <input
                     type="tel"
@@ -606,14 +597,14 @@ export default function ServicesPage() {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/50 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
-                    placeholder="+54 11 1234 5678"
+                    placeholder={t.contact.phonePlaceholder}
                   />
                 </div>
 
                 {/* Message field */}
                 <div>
                   <label htmlFor="services-message" className="block text-sm font-bold mb-2">
-                    Mensaje
+                    {t.contact.message}
                   </label>
                   <textarea
                     id="services-message"
@@ -622,7 +613,7 @@ export default function ServicesPage() {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/50 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
-                    placeholder="Contanos sobre tu proyecto..."
+                    placeholder={t.contact.messagePlaceholder}
                   />
                 </div>
 
@@ -632,20 +623,20 @@ export default function ServicesPage() {
                   disabled={isSubmitting}
                   className="w-full px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+                  {isSubmitting ? t.contact.submitting : t.contact.submit}
                 </button>
 
                 {/* Success message */}
                 {submitStatus === "success" && (
                   <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center text-sm">
-                    ¡Mensaje enviado con éxito! Te contactaremos pronto.
+                    {t.contact.successMessage}
                   </div>
                 )}
 
                 {/* Error message */}
                 {submitStatus === "error" && (
                   <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-center text-sm">
-                    Error al enviar. Intentá de nuevo o contactanos por WhatsApp.
+                    {t.contact.errorMessage}
                   </div>
                 )}
               </form>

@@ -7,6 +7,7 @@ import Footer from "../components/Footer"
 import WhatsAppIcon from "../components/icons/WhatsAppIcon"
 import LocationIcon from "../components/icons/LocationIcon"
 import { sendContactEmail } from "../actions/send-email"
+import { useLanguage } from "../contexts/LanguageContext"
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ declare global {
 }
 
 export default function ContactPage() {
+  const { t } = useLanguage()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -86,14 +88,11 @@ export default function ContactPage() {
             {/* Left Column - Info */}
             <div className="space-y-6 md:space-y-8">
               <div>
-                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">HABLEMOS</p>
+                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">{t.contact.heading}</p>
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-                  EMPECEMOS TU PROYECTO
+                  {t.contact.title}
                 </h1>
-                <p className="text-base md:text-lg text-gray-300">
-                  ¿Tenés una idea? Estamos listos para hacerla realidad. Contactanos y llevemos tu negocio al siguiente
-                  nivel.
-                </p>
+                <p className="text-base md:text-lg text-gray-300">{t.contact.heroDescription}</p>
               </div>
 
               {/* Contact Methods */}
@@ -108,8 +107,8 @@ export default function ContactPage() {
                     <WhatsAppIcon className="text-yellow-400 w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">WhatsApp</p>
-                    <p className="font-bold">+54 11 5897 9663</p>
+                    <p className="text-sm text-gray-400">{t.contact.whatsappLabel}</p>
+                    <p className="font-bold">{t.contact.whatsappNumber}</p>
                   </div>
                 </a>
 
@@ -118,8 +117,8 @@ export default function ContactPage() {
                     <LocationIcon className="text-yellow-400 w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400">Ubicación</p>
-                    <p className="font-bold">Moldes 850, Buenos Aires, Argentina</p>
+                    <p className="text-sm text-gray-400">{t.contact.locationLabel}</p>
+                    <p className="font-bold">{t.contact.locationAddress}</p>
                   </div>
                 </div>
               </div>
@@ -147,13 +146,13 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 md:px-8 relative z-10">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8 md:mb-12">
-              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">FORMULARIO</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-                O ENVIANOS UN MENSAJE
-              </h2>
-              <p className="text-base md:text-lg text-gray-300">
-                Completá el formulario y te contactaremos a la brevedad
+              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                {t.contact.formHeading}
               </p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
+                {t.contact.formSubtitle}
+              </h2>
+              <p className="text-base md:text-lg text-gray-300">{t.contact.formDescription}</p>
             </div>
 
             <div className="bg-[#2a2a2a]/60 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-700">
@@ -171,7 +170,7 @@ export default function ContactPage() {
 
                 <div>
                   <label htmlFor="name" className="block text-sm font-bold mb-2">
-                    Nombre
+                    {t.contact.name}
                   </label>
                   <input
                     type="text"
@@ -180,12 +179,12 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
-                    placeholder="Tu nombre"
+                    placeholder={t.contact.namePlaceholder}
                   />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-bold mb-2">
-                    Email
+                    {t.contact.email}
                   </label>
                   <input
                     type="email"
@@ -194,12 +193,12 @@ export default function ContactPage() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
-                    placeholder="tu@email.com"
+                    placeholder={t.contact.emailPlaceholder}
                   />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-bold mb-2">
-                    Teléfono
+                    {t.contact.phone}
                   </label>
                   <input
                     type="tel"
@@ -207,12 +206,12 @@ export default function ContactPage() {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors"
-                    placeholder="+54 11 1234 5678"
+                    placeholder={t.contact.phonePlaceholder}
                   />
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-bold mb-2">
-                    Mensaje
+                    {t.contact.message}
                   </label>
                   <textarea
                     id="message"
@@ -221,7 +220,7 @@ export default function ContactPage() {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none"
-                    placeholder="Contanos sobre tu proyecto..."
+                    placeholder={t.contact.messagePlaceholder}
                   />
                 </div>
                 <button
@@ -229,17 +228,17 @@ export default function ContactPage() {
                   disabled={isSubmitting}
                   className="w-full px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+                  {isSubmitting ? t.contact.submitting : t.contact.submit}
                 </button>
 
                 {submitStatus === "success" && (
                   <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center">
-                    ¡Mensaje enviado con éxito! Te contactaremos pronto.
+                    {t.contact.successMessage}
                   </div>
                 )}
                 {submitStatus === "error" && (
                   <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-center">
-                    Error al enviar el mensaje. Por favor, intentá de nuevo o contactanos por WhatsApp.
+                    {t.contact.errorMessageAlt}
                   </div>
                 )}
               </form>

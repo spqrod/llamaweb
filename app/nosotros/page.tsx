@@ -3,26 +3,32 @@
 import Link from "next/link"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import { useLanguage } from "../contexts/LanguageContext"
 
 export default function AboutPage() {
+  const { t, language } = useLanguage()
+
+  const getPath = (path: string) => {
+    return language === "en" ? `/en${path}` : path
+  }
+
   const team = [
     {
-      name: "Rodion",
-      role: "Fundador & Desarrollador",
-      description:
-        "Fundador de LLAMAWEB con más de 5 años de experiencia en desarrollo web full stack y arquitectura de aplicaciones modernas.",
+      name: t.about.member1Name,
+      role: t.about.member1Role,
+      description: t.about.member1Description,
       image: "/teammembers/rodion.webp",
     },
     {
-      name: "Max",
-      role: "Marketing",
-      description: "Especialista en marketing digital y estrategias de crecimiento para negocios online.",
+      name: t.about.member2Name,
+      role: t.about.member2Role,
+      description: t.about.member2Description,
       image: "/teammembers/max.webp",
     },
     {
-      name: "Eugenio",
-      role: "Diseñador",
-      description: "Diseñador creativo especializado en interfaces modernas y experiencias de usuario intuitivas.",
+      name: t.about.member3Name,
+      role: t.about.member3Role,
+      description: t.about.member3Description,
       image: "/teammembers/eugenio.webp",
     },
   ]
@@ -39,13 +45,11 @@ export default function AboutPage() {
         </div>
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
-          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">QUIÉNES SOMOS</p>
+          <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">{t.about.heroHeading}</p>
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-            NOSOTROS
+            {t.about.heroTitle}
           </h1>
-          <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
-            Un equipo apasionado por crear experiencias digitales que transforman negocios
-          </p>
+          <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">{t.about.heroDescription}</p>
         </div>
       </section>
 
@@ -54,26 +58,18 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 md:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 md:mb-12">
-              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTRA HISTORIA</p>
+              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                {t.about.storyHeading}
+              </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">
-                DESDE BUENOS AIRES CON AMOR
+                {t.about.storyTitle}
               </h2>
             </div>
 
             <div className="space-y-6 text-base md:text-lg text-gray-300 leading-relaxed">
-              <p>
-                LLAMAWEB nació en 2023 con una misión clara: ayudar a empresas y emprendedores a establecer su presencia
-                digital de manera profesional y efectiva. Desde Buenos Aires, Argentina, hemos trabajado con clientes de
-                todo el mundo, creando sitios web que no solo se ven bien, sino que generan resultados reales.
-              </p>
-              <p>
-                Nuestro enfoque combina diseño moderno, tecnología de vanguardia y una profunda comprensión de las
-                necesidades de nuestros clientes. Cada proyecto es una oportunidad para crear algo único y memorable.
-              </p>
-              <p>
-                Creemos que un buen sitio web es más que código y diseño: es una herramienta poderosa para conectar con
-                tu audiencia, contar tu historia y hacer crecer tu negocio.
-              </p>
+              <p>{t.about.storyP1}</p>
+              <p>{t.about.storyP2}</p>
+              <p>{t.about.storyP3}</p>
             </div>
           </div>
         </div>
@@ -83,13 +79,11 @@ export default function AboutPage() {
       <section className="py-16 md:py-32 bg-gradient-to-b from-[#1e1e1e] to-[#2a2a2a]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="text-center mb-12 md:mb-16">
-            <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTRO EQUIPO</p>
+            <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">{t.about.teamHeading}</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-              CONOCÉ A LOS EXPERTOS
+              {t.about.teamTitle}
             </h2>
-            <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
-              Un equipo multidisciplinario dedicado a crear experiencias digitales excepcionales
-            </p>
+            <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">{t.about.teamDescription}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -118,16 +112,14 @@ export default function AboutPage() {
       <section className="py-16 md:py-32 bg-[#1e1e1e]">
         <div className="container mx-auto px-4 md:px-8 text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 font-[family-name:var(--font-poppins)]">
-            ¿LISTO PARA TRABAJAR JUNTOS?
+            {t.about.ctaTitle}
           </h2>
-          <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Contactanos hoy y empecemos a construir algo increíble
-          </p>
+          <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto">{t.about.ctaDescription}</p>
           <Link
-            href="/contacto"
+            href={getPath("/contacto")}
             className="inline-block px-8 py-4 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold"
           >
-            Hablemos
+            {t.about.ctaButton}
           </Link>
         </div>
       </section>

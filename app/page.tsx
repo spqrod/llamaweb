@@ -14,8 +14,9 @@ import ChatIcon from "./components/icons/ChatIcon"
 import WhatsAppIcon from "./components/icons/WhatsAppIcon"
 import HandshakeIcon from "./components/icons/HandshakeIcon"
 import { sendContactEmail } from "./actions/send-email"
-import { services } from "./data/services"
+import { getServices } from "./data/services" // Renamed for clarity
 import ProjectsSection from "./components/ProjectsSection"
+import { useLanguage } from "./contexts/LanguageContext"
 
 declare global {
   interface Window {
@@ -24,6 +25,8 @@ declare global {
 }
 
 export default function Home() {
+  const { t, language, getPath } = useLanguage()
+
   const [headerVisible, setHeaderVisible] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [servicesAnimated, setServicesAnimated] = useState(false)
@@ -284,23 +287,20 @@ export default function Home() {
               <div className="w-full space-y-6 md:space-y-8 text-center lg:text-left">
                 {/* Header */}
                 <div className="space-y-4 md:space-y-6 text-center lg:text-left">
-                  <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest">DIGITAL HECHO BIEN</p>
+                  <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest">{t.hero.tagline}</p>
                   <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight font-[family-name:var(--font-poppins)]">
-                    LANZAMOS SITIOS WEB
+                    {t.hero.title}
                   </h1>
                 </div>
 
                 {/* Content - Hidden on mobile, shown on desktop */}
                 <div className="hidden lg:block space-y-4 md:space-y-6 text-left">
-                  <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-                    Creamos sitios web modernos y profesionales que impulsan tu negocio. Diseño, desarrollo y
-                    lanzamiento de tu presencia digital en tiempo récord.
-                  </p>
+                  <p className="text-base md:text-lg text-gray-300 leading-relaxed">{t.hero.description}</p>
                   <button
                     onClick={scrollToContact}
                     className="px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                   >
-                    Tu sitio web en 3 días
+                    {t.hero.cta}
                   </button>
                 </div>
               </div>
@@ -316,15 +316,12 @@ export default function Home() {
 
               {/* Content - Shown on mobile only */}
               <div className="w-full lg:hidden space-y-4 md:space-y-6 text-center">
-                <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-                  Creamos sitios web modernos y profesionales que impulsan tu negocio. Diseño, desarrollo y lanzamiento
-                  de tu presencia digital en tiempo récord.
-                </p>
+                <p className="text-base md:text-lg text-gray-300 leading-relaxed">{t.hero.description}</p>
                 <button
                   onClick={scrollToContact}
                   className="px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                 >
-                  Tu sitio web en 3 días
+                  {t.hero.cta}
                 </button>
               </div>
             </div>
@@ -342,9 +339,11 @@ export default function Home() {
             <div className="space-y-8 md:space-y-12">
               {/* Header */}
               <div className="text-center">
-                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">NUESTROS SERVICIOS</p>
+                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                  {t.services.heading}
+                </p>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">
-                  TIPOS DE SITIOS WEB QUE HACEMOS
+                  {t.services.title}
                 </h2>
               </div>
 
@@ -363,20 +362,22 @@ export default function Home() {
 
                 {/* Services - Second on desktop */}
                 <div className="space-y-4 md:space-y-6 order-3 lg:order-2">
-                  {services.slice(0, 4).map((service, index) => (
-                    <div
-                      key={service.id}
-                      className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-700 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 group ${
-                        servicesAnimated ? `animate-service-hover-${index + 1}` : ""
-                      }`}
-                      style={{
-                        animationDelay: servicesAnimated ? `${index * 0.3}s` : "0s",
-                      }}
-                    >
-                      <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{service.title}</h3>
-                      <p className="text-gray-300 text-sm">{service.shortDescription}</p>
-                    </div>
-                  ))}
+                  {getServices(language)
+                    .slice(0, 4)
+                    .map((service, index) => (
+                      <div
+                        key={service.id}
+                        className={`p-4 md:p-6 border-l-4 border-l-transparent border border-gray-700 rounded-lg hover:border-yellow-400 hover:border-l-yellow-400 hover:bg-yellow-400/5 transition-all duration-300 group ${
+                          servicesAnimated ? `animate-service-hover-${index + 1}` : ""
+                        }`}
+                        style={{
+                          animationDelay: servicesAnimated ? `${index * 0.3}s` : "0s",
+                        }}
+                      >
+                        <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{service.title}</h3>
+                        <p className="text-gray-300 text-sm">{service.shortDescription}</p>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -391,7 +392,7 @@ export default function Home() {
         <section className="relative py-8 bg-[#1e1e1e]">
           <div className="container mx-auto px-4 md:px-8">
             <div className="flex flex-col items-center animate-bounce">
-              <p className="text-yellow-400 text-sm font-bold mb-2">SEGUÍ EXPLORANDO</p>
+              <p className="text-yellow-400 text-sm font-bold mb-2">{t.benefits.scrollCta}</p>
               <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
@@ -410,13 +411,13 @@ export default function Home() {
                 className="flex gap-0 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
-                {services.map((service, index) => (
+                {getServices(language).map((service, index) => (
                   <div key={service.id} className="flex-shrink-0 w-full snap-center">
                     <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-12 items-center min-h-[70vh] px-4 md:px-8">
                       {/* Service Name - Always first on mobile */}
                       <div className="w-full lg:hidden">
                         <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
-                          SERVICIO {String(index + 1).padStart(2, "0")}
+                          {t.services.service} {String(index + 1).padStart(2, "0")}
                         </p>
                         <h3 className="text-3xl md:text-4xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
                           {service.title}
@@ -443,7 +444,7 @@ export default function Home() {
                           </button>
                         )}
 
-                        {currentSlide < services.length - 1 && (
+                        {currentSlide < getServices(language).length - 1 && (
                           <button
                             onClick={scrollRight}
                             className="lg:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-yellow-400/50 hover:bg-yellow-400/70 text-black rounded-full flex items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400/50 cursor-pointer"
@@ -485,7 +486,7 @@ export default function Home() {
                         {/* Service Name - Hidden on mobile, shown on desktop */}
                         <div className="hidden lg:block">
                           <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
-                            SERVICIO {String(index + 1).padStart(2, "0")}
+                            {t.services.service} {String(index + 1).padStart(2, "0")}
                           </p>
                           <h3 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 font-[family-name:var(--font-poppins)]">
                             {service.title}
@@ -498,21 +499,21 @@ export default function Home() {
                         {/* Time and Price */}
                         <div className="flex flex-wrap gap-4 text-sm">
                           <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
-                            <span className="text-gray-400">Tiempo: </span>
+                            <span className="text-gray-400">{t.services.time} </span>
                             <span className="text-white font-bold">{service.time}</span>
                           </div>
                           <div className="px-4 py-2 bg-[#2a2a2a] border border-gray-700 rounded-lg">
-                            <span className="text-gray-400">Precio: </span>
+                            <span className="text-gray-400">{t.services.price} </span>
                             <span className="text-yellow-400 font-bold">{service.price}</span>
                           </div>
                         </div>
 
                         {/* Button */}
                         <Link
-                          href="/servicios"
+                          href={getPath("/servicios")}
                           className="inline-block px-8 py-3 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold"
                         >
-                          Ver Más Detalles
+                          {t.services.cta}
                         </Link>
                       </div>
                     </div>
@@ -520,6 +521,7 @@ export default function Home() {
                 ))}
               </div>
 
+              {/* Slider Navigation Arrows */}
               {currentSlide > 0 && (
                 <button
                   onClick={scrollLeft}
@@ -532,7 +534,7 @@ export default function Home() {
                 </button>
               )}
 
-              {currentSlide < services.length - 1 && (
+              {currentSlide < getServices(language).length - 1 && (
                 <button
                   onClick={scrollRight}
                   className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-yellow-400/80 hover:bg-yellow-400 text-black rounded-full items-center justify-center transition-all duration-300 shadow-lg border-2 border-yellow-400 cursor-pointer"
@@ -546,7 +548,7 @@ export default function Home() {
 
               {/* Slider Navigation Dots */}
               <div className="flex justify-center gap-2 mt-8 py-2 px-4">
-                {services.map((_, index) => (
+                {getServices(language).map((_, index) => (
                   <button
                     key={index}
                     onClick={() => {
@@ -583,13 +585,13 @@ export default function Home() {
             <div className="flex flex-col gap-8 md:gap-12">
               {/* Header - Always first */}
               <div className="text-center">
-                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">POR QUÉ ELEGIRNOS</p>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
-                  BENEFICIOS DE NUESTROS SITIOS WEB
-                </h2>
-                <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto px-4">
-                  Creamos experiencias digitales que impulsan tu negocio hacia el futuro
+                <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                  {t.benefits.heading}
                 </p>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
+                  {t.benefits.title}
+                </h2>
+                <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto px-4">{t.benefits.description}</p>
               </div>
 
               {/* Grid for image and benefits */}
@@ -613,11 +615,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">La Garantía LLAMA de 10 Años</h3>
-                      <p className="text-gray-300 text-sm">
-                        Garantizamos que tu sitio web estará funcionando. Y si algo se rompe, lo arreglamos sin costo
-                        alguno para vos.
-                      </p>
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{t.benefits.guarantee.title}</h3>
+                      <p className="text-gray-300 text-sm">{t.benefits.guarantee.description}</p>
                     </div>
                   </div>
 
@@ -629,10 +628,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">Diseño Responsive</h3>
-                      <p className="text-gray-300 text-sm">
-                        Perfectamente adaptado a todos los dispositivos: móviles, tablets y escritorio.
-                      </p>
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{t.benefits.responsive.title}</h3>
+                      <p className="text-gray-300 text-sm">{t.benefits.responsive.description}</p>
                     </div>
                   </div>
 
@@ -644,10 +641,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">Velocidad Extrema</h3>
-                      <p className="text-gray-300 text-sm">
-                        Sitios optimizados que cargan en menos de 2 segundos, mejorando la experiencia del usuario.
-                      </p>
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{t.benefits.speed.title}</h3>
+                      <p className="text-gray-300 text-sm">{t.benefits.speed.description}</p>
                     </div>
                   </div>
 
@@ -659,10 +654,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">Seguridad Máxima</h3>
-                      <p className="text-gray-300 text-sm">
-                        Protección avanzada contra amenazas con certificados SSL y encriptación.
-                      </p>
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{t.benefits.security.title}</h3>
+                      <p className="text-gray-300 text-sm">{t.benefits.security.description}</p>
                     </div>
                   </div>
 
@@ -674,10 +667,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">SEO Optimizado</h3>
-                      <p className="text-gray-300 text-sm">
-                        Configuración técnica perfecta para que Google te encuentre y posicione.
-                      </p>
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{t.benefits.seo.title}</h3>
+                      <p className="text-gray-300 text-sm">{t.benefits.seo.description}</p>
                     </div>
                   </div>
 
@@ -689,10 +680,8 @@ export default function Home() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold mb-2">Soporte Continuo</h3>
-                      <p className="text-gray-300 text-sm">
-                        Asistencia técnica permanente para resolver cualquier duda o problema.
-                      </p>
+                      <h3 className="text-lg md:text-xl font-bold mb-2">{t.benefits.support.title}</h3>
+                      <p className="text-gray-300 text-sm">{t.benefits.support.description}</p>
                     </div>
                   </div>
                 </div>
@@ -721,9 +710,9 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-8">
             {/* Header */}
             <div className="text-center mb-12 md:mb-16">
-              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">QUIÉN ESTÁ DETRÁS</p>
+              <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">{t.team.heading}</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">
-                Conocé al Equipo
+                {t.team.title}
               </h2>
             </div>
 
@@ -731,15 +720,17 @@ export default function Home() {
             <div className="flex flex-col lg:grid lg:grid-cols-5 gap-8 md:gap-12">
               {/* Name and Title - Order 1 on mobile, part of right column on desktop */}
               <div className="order-1 lg:order-2 lg:col-span-3 space-y-2">
-                <h3 className="text-4xl md:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">Rodion</h3>
+                <h3 className="text-4xl md:text-5xl font-extrabold font-[family-name:var(--font-poppins)]">
+                  {t.team.name}
+                </h3>
                 <div className="flex items-center gap-3">
                   <div className="h-1 w-12 bg-yellow-400"></div>
-                  <p className="text-xl md:text-2xl text-yellow-400 font-bold">Fundador</p>
+                  <p className="text-xl md:text-2xl text-yellow-400 font-bold">{t.team.role}</p>
                 </div>
               </div>
 
               <div className="order-2 lg:order-2 lg:col-span-3 lg:col-start-3 space-y-4 text-base md:text-lg text-gray-300 leading-relaxed">
-                <p className="text-lg md:text-xl text-white font-semibold">Tratamos tu negocio si fuera nuestro.</p>
+                <p className="text-lg md:text-xl text-white font-semibold">{t.team.mission}</p>
               </div>
 
               <div className="order-3 lg:order-1 lg:col-span-2 lg:row-span-4 flex items-center justify-center">
@@ -761,33 +752,29 @@ export default function Home() {
               </div>
 
               <div className="order-4 lg:order-2 lg:col-span-3 lg:col-start-3 space-y-4 text-base md:text-lg text-gray-300 leading-relaxed">
-                <p>
-                  Sin atajos, sin complicaciones: desde el primer día, hacemos todo bien. Nosotros nos ocupamos de toda
-                  la parte del sitio web para que vos puedas enfocarte en hacer crecer tu negocio. Contás con nosotros y
-                  nosotros cumplimos, siempre. Somos directos, sin costos ocultos ni sorpresas desagradables
-                </p>
-                <p className="text-yellow-400 font-semibold italic">Tu éxito online es nuestro compromiso.</p>
+                <p>{t.team.description}</p>
+                <p className="text-yellow-400 font-semibold italic">{t.team.commitment}</p>
               </div>
 
               <div className="order-5 lg:order-2 lg:col-span-3 lg:col-start-3">
                 <div className="grid grid-cols-2 gap-4 pt-4">
                   <div className="p-4 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700">
                     <p className="text-2xl md:text-3xl font-bold text-yellow-400">{yearsCount}+</p>
-                    <p className="text-sm text-gray-400">Años de Experiencia</p>
+                    <p className="text-sm text-gray-400">{t.team.yearsLabel}</p>
                   </div>
                   <div className="p-4 bg-[#2a2a2a]/60 backdrop-blur-sm rounded-lg border border-gray-700">
                     <p className="text-2xl md:text-3xl font-bold text-yellow-400">{projectsCount}+</p>
-                    <p className="text-sm text-gray-400">Proyectos Completados</p>
+                    <p className="text-sm text-gray-400">{t.team.projectsLabel}</p>
                   </div>
                 </div>
               </div>
 
               <div className="order-6 lg:order-2 lg:col-span-3 lg:col-start-3 pt-4">
                 <Link
-                  href="/nosotros"
+                  href={getPath("/nosotros")}
                   className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                 >
-                  Conocé Más Sobre Nosotros
+                  {t.team.cta}
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -815,9 +802,11 @@ export default function Home() {
               {/* Left Column - Info */}
               <div className="w-full space-y-6 md:space-y-8 text-center lg:text-left">
                 <div>
-                  <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">HABLEMOS</p>
+                  <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
+                    {t.contact.heading}
+                  </p>
                   <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
-                    EMPECEMOS TU PROYECTO
+                    {t.contact.title}
                   </h2>
                 </div>
                 <div className="flex gap-4 justify-center lg:justify-start">
@@ -828,14 +817,14 @@ export default function Home() {
                     className="flex items-center gap-2 px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
                   >
                     <WhatsAppIcon className="w-5 h-5" />
-                    WhatsApp
+                    {t.contact.whatsapp}
                   </a>
                 </div>
               </div>
 
               {/* Right Column - Form */}
               <div className="bg-[#2a2a2a]/60 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-gray-700">
-                <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">O completá el formulario</h3>
+                <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t.contact.formTitle}</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true">
                     <input
@@ -850,7 +839,7 @@ export default function Home() {
 
                   <div>
                     <label htmlFor="home-name" className="block text-sm font-bold mb-2">
-                      Nombre
+                      {t.contact.name}
                     </label>
                     <input
                       type="text"
@@ -859,12 +848,12 @@ export default function Home() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
-                      placeholder="Tu nombre"
+                      placeholder={t.contact.namePlaceholder}
                     />
                   </div>
                   <div>
                     <label htmlFor="home-email" className="block text-sm font-bold mb-2">
-                      Email
+                      {t.contact.email}
                     </label>
                     <input
                       type="email"
@@ -873,12 +862,12 @@ export default function Home() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors text-white"
-                      placeholder="tu@email.com"
+                      placeholder={t.contact.emailPlaceholder}
                     />
                   </div>
                   <div>
                     <label htmlFor="home-phone" className="block text-sm font-bold mb-2">
-                      Teléfono
+                      {t.contact.phone}
                     </label>
                     <input
                       type="tel"
@@ -886,12 +875,12 @@ export default function Home() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
-                      placeholder="+54 11 1234 5678"
+                      placeholder={t.contact.phonePlaceholder}
                     />
                   </div>
                   <div>
                     <label htmlFor="home-message" className="block text-sm font-bold mb-2">
-                      Mensaje
+                      {t.contact.message}
                     </label>
                     <textarea
                       id="home-message"
@@ -900,7 +889,7 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1e1e1e]/70 border border-gray-600 rounded-lg focus:border-yellow-400 focus:outline-none transition-colors resize-none text-white"
-                      placeholder="Contanos sobre tu proyecto..."
+                      placeholder={t.contact.messagePlaceholder}
                     />
                   </div>
                   <button
@@ -908,17 +897,17 @@ export default function Home() {
                     disabled={isSubmitting}
                     className="w-full px-6 py-3 bg-yellow-400 text-black rounded-full hover:bg-yellow-500 transition-all duration-300 font-bold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
-                    {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+                    {isSubmitting ? t.contact.submitting : t.contact.submit}
                   </button>
 
                   {submitStatus === "success" && (
                     <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-center text-sm">
-                      ¡Mensaje enviado con éxito! Te contactaremos pronto.
+                      {t.contact.successMessage}
                     </div>
                   )}
                   {submitStatus === "error" && (
                     <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-center text-sm">
-                      Error al enviar. Intentá de nuevo o contactanos por WhatsApp.
+                      {t.contact.errorMessage}
                     </div>
                   )}
                 </form>

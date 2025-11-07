@@ -2,6 +2,7 @@
 
 import { useState, memo } from "react"
 import ProjectDialog from "./ProjectDialog"
+import { useLanguage } from "../contexts/LanguageContext"
 
 interface ProjectsSectionProps {
   showAll?: boolean
@@ -15,14 +16,15 @@ const ProjectsSection = memo(function ProjectsSection({
   showCTA = false,
 }: ProjectsSectionProps) {
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
+  const { t, getPath } = useLanguage()
 
   console.log("[v0] ProjectsSection - Rendering, selectedProject:", selectedProject)
 
   const allProjects = [
     {
       id: 1,
-      name: "Dr. Zakharenko",
-      category: "Veterinario",
+      name: t.projects.items.drZakharenko.name,
+      category: t.projects.items.drZakharenko.category,
       image: "/projects/drzakharenko-1.webp",
       screenshots: ["/projects/drzakharenko-1.webp", "/projects/drzakharenko-2.webp", "/projects/drzakharenko-3.webp"],
       mobileScreenshots: [
@@ -31,12 +33,12 @@ const ProjectsSection = memo(function ProjectsSection({
         "/projects/drzakharenko-mobile-3.webp",
       ],
       url: "https://drzakharenko.com.ar",
-      description: "Sitio web profesional para consultorio veterinario.",
+      description: t.projects.items.drZakharenko.description,
     },
     {
       id: 2,
-      name: "Kalahari Biocare",
-      category: "Productor",
+      name: t.projects.items.kalahari.name,
+      category: t.projects.items.kalahari.category,
       image: "/projects/kalahari-1.webp",
       screenshots: ["/projects/kalahari-1.webp", "/projects/kalahari-2.webp", "/projects/kalahari-3.webp"],
       mobileScreenshots: [
@@ -45,12 +47,12 @@ const ProjectsSection = memo(function ProjectsSection({
         "/projects/kalahari-mobile-3.webp",
       ],
       url: "https://kalaharibiocare.com",
-      description: "Sitio web para productor de aceites naturales y mayorista para empresas cosméticas.",
+      description: t.projects.items.kalahari.description,
     },
     {
       id: 3,
-      name: "Abogado",
-      category: "Legal",
+      name: t.projects.items.abogado.name,
+      category: t.projects.items.abogado.category,
       image: "/projects/abogado-1.webp",
       screenshots: ["/projects/abogado-1.webp", "/projects/abogado-2.webp", "/projects/abogado-3.webp"],
       mobileScreenshots: [
@@ -59,12 +61,12 @@ const ProjectsSection = memo(function ProjectsSection({
         "/projects/abogado-mobile-3.webp",
       ],
       url: "https://abogado-demo-2.vercel.app",
-      description: "Sitio web profesional para estudio jurídico con información de servicios legales.",
+      description: t.projects.items.abogado.description,
     },
     {
       id: 4,
-      name: "Daria Zherebtsova",
-      category: "Portfolio",
+      name: t.projects.items.daria.name,
+      category: t.projects.items.daria.category,
       image: "/projects/daria-1.webp",
       screenshots: ["/projects/daria-1.webp", "/projects/daria-2.webp", "/projects/daria-3.webp"],
       mobileScreenshots: [
@@ -73,12 +75,12 @@ const ProjectsSection = memo(function ProjectsSection({
         "/projects/daria-mobile-3.webp",
       ],
       url: "https://dariazherebtsova.com",
-      description: "Portfolio profesional para artista visual con galería de trabajos.",
+      description: t.projects.items.daria.description,
     },
     {
       id: 5,
-      name: "Duiker Travel",
-      category: "Turismo",
+      name: t.projects.items.duiker.name,
+      category: t.projects.items.duiker.category,
       image: "/projects/duiker-1.webp",
       screenshots: ["/projects/duiker-1.webp", "/projects/duiker-2.webp"],
       mobileScreenshots: [
@@ -87,7 +89,7 @@ const ProjectsSection = memo(function ProjectsSection({
         "/projects/duiker-mobile-3.webp",
       ],
       url: "https://duikertravel.com",
-      description: "Sitio web para agencia de viajes con información de destinos y paquetes turísticos.",
+      description: t.projects.items.duiker.description,
     },
   ]
 
@@ -100,15 +102,13 @@ const ProjectsSection = memo(function ProjectsSection({
         {showHeader && (
           <div className="text-center mb-12 md:mb-16">
             <p className="text-yellow-400 text-xs md:text-sm font-bold tracking-widest mb-4">
-              {showAll ? "NUESTRO PORTAFOLIO" : "NUESTRO TRABAJO"}
+              {showAll ? t.projects.heroHeading : t.projects.heading}
             </p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 font-[family-name:var(--font-poppins)]">
-              PROYECTOS REALIZADOS
+              {showAll ? t.projects.heroTitle : t.projects.title}
             </h2>
             <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto px-4">
-              {showAll
-                ? "Explorá algunos de los sitios web que hemos creado para nuestros clientes"
-                : "Mirá algunos de los sitios web que hemos creado para nuestros clientes"}
+              {showAll ? t.projects.heroDescription : t.projects.description}
             </p>
           </div>
         )}
@@ -139,7 +139,7 @@ const ProjectsSection = memo(function ProjectsSection({
                 <p className="text-xs md:text-sm text-gray-300">{project.description}</p>
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <p className="text-xs md:text-sm text-yellow-400 font-bold">Click para ver más</p>
+                <p className="text-xs md:text-sm text-yellow-400 font-bold">{t.projects.clickToSeeMore}</p>
               </div>
             </div>
           ))}
@@ -148,10 +148,10 @@ const ProjectsSection = memo(function ProjectsSection({
         {showCTA && (
           <div className="text-center">
             <a
-              href="/proyectos"
+              href={getPath("/proyectos")}
               className="inline-block px-6 md:px-8 py-3 md:py-4 border-2 border-yellow-400 text-yellow-400 rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300 font-bold text-sm md:text-base cursor-pointer"
             >
-              Ver Todos los Proyectos
+              {t.projects.cta}
             </a>
           </div>
         )}
