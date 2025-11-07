@@ -140,12 +140,11 @@ export default function ProjectDialog({ project, onClose }: ProjectDialogProps) 
 
         <div className="relative">
           <img
+            key={`${project.id}-${currentScreenshot}`}
             src={screenshots[currentScreenshot] || "/placeholder.svg"}
             alt={`${project.name} - Screenshot ${currentScreenshot + 1}`}
             onClick={handleNextScreenshot}
-            className={`w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 cursor-pointer ${
-              isTransitioning ? "opacity-0" : "opacity-100"
-            }`}
+            className="w-auto h-auto max-h-[85vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 cursor-pointer opacity-0 animate-[fadeIn_0.3s_ease-in-out_forwards]"
           />
 
           {screenshots.length > 1 && (

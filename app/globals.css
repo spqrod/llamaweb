@@ -253,3 +253,13 @@
 .rotate-y-0 {
   transform: rotateY(0deg) rotateX(0deg);
 }
+
+/* Added fadeIn animation for smooth image transitions in project slider */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
