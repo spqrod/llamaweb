@@ -128,10 +128,6 @@ export default function Header() {
               </button>
             </div>
 
-            <div className="mb-8">
-              <LanguageToggle />
-            </div>
-
             <nav className="space-y-6">
               <Link
                 href={getPath("/servicios")}
@@ -163,15 +159,20 @@ export default function Header() {
               </Link>
             </nav>
 
-            <div className="mt-12 pt-12 border-t border-gray-800">
+            <div className="mt-12 pt-12 border-t border-gray-800 space-y-6">
+              <div className="inline-block">
+                <LanguageToggle />
+              </div>
+
               <a
                 href="https://wa.me/5491158979663?text=Hola%2C%20me%20interesa%20un%20sitio%20web"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-yellow-400 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 hover:text-yellow-400 transition-colors cursor-pointer"
                 aria-label="WhatsApp"
               >
                 <WhatsAppIcon className="w-6 h-6" />
+                <span className="font-bold">WhatsApp</span>
               </a>
             </div>
 
