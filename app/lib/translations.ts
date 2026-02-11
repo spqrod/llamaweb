@@ -16,7 +16,7 @@ export const translations = {
       contact: "Contacto",
       sendEmail: "Enviar Email",
       legal: "Legal",
-      copyright: "© 2025 LLAMAWEB. Todos los derechos reservados.",
+      copyright: "LLAMAWEB. Todos los derechos reservados.",
     },
     hero: {
       tagline: "DIGITAL HECHO BIEN",
@@ -74,7 +74,7 @@ export const translations = {
           "Integración con Google Analytics",
         ],
         time: "3 días",
-        price: "$200.000",
+        price: "Desde $700.000",
       },
       institutional: {
         title: "Sitio web institucional",
@@ -90,7 +90,7 @@ export const translations = {
           "Integración con Google Analytics",
         ],
         time: "5 días",
-        price: "$300.000",
+        price: "Desde $1.000.000",
       },
       ecommerce: {
         title: "Tienda online",
@@ -107,7 +107,7 @@ export const translations = {
           "Integración con Google Analytics",
         ],
         time: "Desde 30 días",
-        price: "Desde $700.000",
+        price: "Desde $2.000.000",
       },
       crm: {
         title: "CRM",
@@ -123,7 +123,7 @@ export const translations = {
           "Integración con herramientas",
         ],
         time: "Desde 30 días",
-        price: "Desde $2.000.000",
+        price: "Desde $4.000.000",
       },
     },
     benefits: {
@@ -293,7 +293,7 @@ export const translations = {
       contact: "Contact",
       sendEmail: "Send Email",
       legal: "Legal",
-      copyright: "© 2025 LLAMAWEB. All rights reserved.",
+      copyright: "LLAMAWEB. All rights reserved.",
     },
     hero: {
       tagline: "DIGITAL DONE RIGHT",
@@ -351,7 +351,7 @@ export const translations = {
           "Google Analytics integration",
         ],
         time: "3 days",
-        price: "$200,000",
+        price: "From $700,000",
       },
       institutional: {
         title: "Corporate website",
@@ -367,7 +367,7 @@ export const translations = {
           "Google Analytics integration",
         ],
         time: "5 days",
-        price: "$300,000",
+        price: "From $1,000,000",
       },
       ecommerce: {
         title: "Online store",
@@ -384,7 +384,7 @@ export const translations = {
           "Google Analytics integration",
         ],
         time: "From 30 days",
-        price: "From $700,000",
+        price: "From $2,000,000",
       },
       crm: {
         title: "CRM",
@@ -399,7 +399,7 @@ export const translations = {
           "Tool integration",
         ],
         time: "From 30 days",
-        price: "From $2,000,000",
+        price: "From $4,000,000",
       },
     },
     benefits: {
